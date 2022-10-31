@@ -1,0 +1,36 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'com.revolut.jooq-docker' version '0.3.7'
+}
+
+ext {
+    set('testcontainersVersion', "1.17.5")
+}
+
+dependencies {
+    implementation(project(':domain'))
+    implementation(project(':application'))
+
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-jooq')
+
+    jdbc('org.postgresql:postgresql')
+    runtimeOnly('org.postgresql:postgresql')
+
+    implementation('org.testcontainers:postgresql')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+    }
+}
+
+tasks {
+    generateJooqClasses {
+        schemas = ['public']
+        basePackageName = 'it.tarczynski.onion.library.generated'
+    }
+}

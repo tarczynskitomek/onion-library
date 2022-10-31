@@ -1,0 +1,42 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+plugins {
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'groovy'
+}
+
+group = 'it.tarczynski'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    apply plugin: "groovy"
+    apply plugin: 'groovy'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compileOnly('org.projectlombok:lombok:1.18.24')
+        annotationProcessor('org.projectlombok:lombok:1.18.24')
+
+        testImplementation('org.apache.groovy:groovy-all:4.0.6')
+        testImplementation('org.spockframework:spock-core:2.3-groovy-4.0')
+    }
+
+
+    tasks.named('test') {
+        useJUnitPlatform()
+        testLogging {
+            events = [TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED]
+        }
+    }
+
+}
