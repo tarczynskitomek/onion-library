@@ -53,4 +53,15 @@ class Assertions {
         assert subject.archivedAt() == expected
         this
     }
+
+    Assertions hasTitle(String expected) {
+        assert subject.title() == expected
+        this
+    }
+
+    Assertions hasAuthor(String expected) {
+        assert subject.authorId() == expected
+        this
+    }
+
 }

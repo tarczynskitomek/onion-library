@@ -5,7 +5,7 @@ class InMemoryBookRepository implements BookRepository {
     private final Map<String, Book> database = new HashMap<>()
 
     @Override
-    Book save(Book book) {
+    Book create(Book book) {
         database.put(book.snapshot().id(), book)
         book
     }

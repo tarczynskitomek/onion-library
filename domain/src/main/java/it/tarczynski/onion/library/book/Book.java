@@ -31,13 +31,23 @@ abstract sealed class Book {
     }
 
     static Book from(BookSnapshot snapshot) {
-        throw new UnsupportedOperationException();
+        return switch (snapshot.status()) {
+            case AWAITING_APPROVAL -> new NewBook(snapshot);
+            case APPROVED -> new ApprovedBook(snapshot);
+            case REJECTED -> new RejectedBook(snapshot);
+            case ARCHIVED -> new ArchivedBook(snapshot);
+        };
     }
 
     private static final class NewBook extends Book {
 
         private NewBook(BookId id, AuthorId author, Title title, CreatedAt createdAt) {
             super(id, author, title, createdAt, null, null, null);
+        }
+
+        public NewBook(BookSnapshot snapshot) {
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
+                    null, null, null);
         }
 
         @Override
@@ -62,6 +72,11 @@ abstract sealed class Book {
             super(id, author, title, createdAt, approvedAt, null, null);
         }
 
+        public ApprovedBook(BookSnapshot snapshot) {
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
+                    new ApprovedAt(snapshot.approvedAt()), null, null);
+        }
+
         @Override
         protected BookSnapshot.Status status() {
             return BookSnapshot.Status.APPROVED;
@@ -82,6 +97,11 @@ abstract sealed class Book {
 
         private RejectedBook(BookId id, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt) {
             super(id, author, title, createdAt, null, rejectedAt, null);
+        }
+
+        public RejectedBook(BookSnapshot snapshot) {
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
+                    null, new RejectedAt(snapshot.rejectedAt()), null);
         }
 
         @Override
@@ -109,6 +129,11 @@ abstract sealed class Book {
 
         private ArchivedBook(BookId id, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt, ArchivedAt archivedAt) {
             super(id, author, title, createdAt, null, rejectedAt, archivedAt);
+        }
+
+        public ArchivedBook(BookSnapshot snapshot) {
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
+                    null, snapshot.rejectedAt() == null ? null : new RejectedAt(snapshot.rejectedAt()), new ArchivedAt(snapshot.archivedAt()));
         }
 
         @Override

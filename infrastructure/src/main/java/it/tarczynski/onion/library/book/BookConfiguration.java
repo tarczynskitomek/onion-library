@@ -18,4 +18,9 @@ class BookConfiguration {
     Books bookFacade() {
         return new Books(bookRepository, timeMachine, transactions);
     }
+
+    @Bean
+    BookQueryRepository bookQueryRepository() {
+        return new PostgresQueryRepository(bookRepository);
+    }
 }

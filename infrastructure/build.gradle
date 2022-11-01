@@ -14,12 +14,15 @@ dependencies {
 
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-jooq')
+    implementation('org.flywaydb:flyway-core')
 
     jdbc('org.postgresql:postgresql')
     runtimeOnly('org.postgresql:postgresql')
 
     implementation('org.testcontainers:postgresql')
+
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.spockframework:spock-spring:2.3-groovy-4.0')
 }
 
 dependencyManagement {

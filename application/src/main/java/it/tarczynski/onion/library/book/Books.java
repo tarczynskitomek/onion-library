@@ -21,7 +21,7 @@ public class Books {
         return transactions.execute(() -> {
             final CreatedAt createdAt = new CreatedAt(timeMachine.now());
             final Book book = Book.create(author, title, createdAt);
-            return bookRepository.save(book).snapshot();
+            return bookRepository.create(book).snapshot();
         });
     }
 
@@ -30,7 +30,7 @@ public class Books {
             final Book book = bookRepository.getById(id);
             final ApprovedAt approvedAt = new ApprovedAt(timeMachine.now());
             final Book approved = book.approve(approvedAt);
-            return bookRepository.save(approved).snapshot();
+            return bookRepository.create(approved).snapshot();
         });
     }
 
@@ -39,7 +39,7 @@ public class Books {
             final Book book = bookRepository.getById(bookId);
             final RejectedAt rejectedAt = new RejectedAt(timeMachine.now());
             final Book rejected = book.reject(rejectedAt);
-            return bookRepository.save(rejected).snapshot();
+            return bookRepository.create(rejected).snapshot();
         });
     }
 
@@ -48,7 +48,7 @@ public class Books {
             final Book book = bookRepository.getById(bookId);
             final ArchivedAt archivedAt = new ArchivedAt(timeMachine.now());
             final Book archived = book.archive(archivedAt);
-            return bookRepository.save(archived).snapshot();
+            return bookRepository.create(archived).snapshot();
         });
     }
 }

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record BookId(UUID value) {
 
-    static BookId from(String string) {
+    public static BookId from(String string) {
         return new BookId(UUID.fromString(string));
     }
 
