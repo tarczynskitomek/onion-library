@@ -23,7 +23,11 @@ class BaseIntegrationSpec extends Specification {
     @Autowired
     protected ObjectMapper objectMapper
 
+    @Autowired
+    protected TimeMachineFake timeMachine
+
     def setup() {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, Books.BOOKS.name)
+        timeMachine.reset()
     }
 }

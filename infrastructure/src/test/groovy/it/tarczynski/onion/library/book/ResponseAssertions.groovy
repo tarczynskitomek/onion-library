@@ -19,16 +19,19 @@ class ResponseAssertions {
         new ResponseAssertions(response)
     }
 
-    Assertions isAccepted() {
+    ResponseAssertions isAccepted() {
         assert response.statusCode == HttpStatus.ACCEPTED
+        this
+    }
+
+    Assertions containsBookThat() {
         final BookSnapshot snapshot = fromBody()
         Assertions.assertThat(snapshot)
     }
 
-    Assertions isOK() {
+    ResponseAssertions isOK() {
         assert response.statusCode == HttpStatus.OK
-        final BookSnapshot snapshot = fromBody()
-        Assertions.assertThat(snapshot)
+        this
     }
 
     private BookSnapshot fromBody() {

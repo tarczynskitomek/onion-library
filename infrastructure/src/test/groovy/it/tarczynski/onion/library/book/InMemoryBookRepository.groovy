@@ -14,4 +14,10 @@ class InMemoryBookRepository implements BookRepository {
     Book getById(BookId id) {
         database.get(id.value().toString())
     }
+
+    @Override
+    Book update(Book book) {
+        database.put(book.snapshot().id(), book)
+        book
+    }
 }

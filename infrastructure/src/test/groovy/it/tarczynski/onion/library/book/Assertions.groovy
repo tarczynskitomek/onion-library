@@ -34,7 +34,7 @@ class Assertions {
         this
     }
 
-    Assertions hasRejectionDate(Instant expected) {
+    Assertions hasRejectionTime(Instant expected) {
         assert subject.rejectedAt() == expected
         this
     }

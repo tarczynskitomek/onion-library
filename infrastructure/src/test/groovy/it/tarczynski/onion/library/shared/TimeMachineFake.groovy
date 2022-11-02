@@ -15,4 +15,8 @@ class TimeMachineFake implements TimeMachine {
     void advanceBy(long value, TemporalUnit unit) {
         currentTime = currentTime.plus(value, unit)
     }
+
+    void reset() {
+        this.currentTime = TimeFixture.NOW
+    }
 }

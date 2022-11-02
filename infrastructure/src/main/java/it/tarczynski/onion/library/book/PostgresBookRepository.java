@@ -4,6 +4,7 @@ import it.tarczynski.onion.library.generated.tables.records.BooksRecord;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.InsertSetMoreStep;
+import org.jooq.UpdateSetMoreStep;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,19 @@ class PostgresBookRepository implements BookRepository {
                 .status(BookSnapshot.Status.valueOf(record.getStatus()))
                 .build();
         return Book.from(snapshot);
+    }
+
+    @Override
+    public Book update(Book book) {
+        final BookSnapshot snapshot = book.snapshot();
+        try (final UpdateSetMoreStep<BooksRecord> update = dsl.update(BOOKS)
+                .set(BOOKS.STATUS, snapshot.status().toString())
+                .set(BOOKS.APPROVED_AT, toOffsetDateTimeNullable(snapshot.approvedAt()))
+                .set(BOOKS.REJECTED_AT, toOffsetDateTimeNullable(snapshot.rejectedAt()))
+        ) {
+            update.where(BOOKS.ID.eq(snapshot.id())).execute();
+        }
+        return book;
     }
 
     @Nullable

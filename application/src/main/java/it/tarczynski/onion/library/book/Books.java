@@ -30,7 +30,7 @@ public class Books {
             final Book book = bookRepository.getById(id);
             final ApprovedAt approvedAt = new ApprovedAt(timeMachine.now());
             final Book approved = book.approve(approvedAt);
-            return bookRepository.create(approved).snapshot();
+            return bookRepository.update(approved).snapshot();
         });
     }
 
@@ -39,7 +39,7 @@ public class Books {
             final Book book = bookRepository.getById(bookId);
             final RejectedAt rejectedAt = new RejectedAt(timeMachine.now());
             final Book rejected = book.reject(rejectedAt);
-            return bookRepository.create(rejected).snapshot();
+            return bookRepository.update(rejected).snapshot();
         });
     }
 

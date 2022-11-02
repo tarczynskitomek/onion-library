@@ -83,7 +83,7 @@ class BooksSpec extends Specification {
             assertThat(rejected)
                     .isRejected()
                     .hasApprovalDate(null)
-                    .hasRejectionDate(TimeFixture.NOW.plusSeconds(60))
+                    .hasRejectionTime(TimeFixture.NOW.plusSeconds(60))
     }
 
     def "should do nothing when rejecting already rejected book"() {
@@ -105,7 +105,7 @@ class BooksSpec extends Specification {
         and: 'the original rejection timestamp is preserved'
             assertThat(rejectedTwice)
                     .isRejected()
-                    .hasRejectionDate(TimeFixture.NOW)
+                    .hasRejectionTime(TimeFixture.NOW)
     }
 
     def "should not reject approved book"() {
@@ -181,7 +181,7 @@ class BooksSpec extends Specification {
         then: 'its status is changed and archivisation date is set'
             assertThat(archived)
                     .isArchived()
-                    .hasRejectionDate(TimeFixture.NOW)
+                    .hasRejectionTime(TimeFixture.NOW)
                     .hasArchivisationDate(TimeFixture.NOW.plus(12, ChronoUnit.DAYS))
     }
 }
