@@ -46,7 +46,7 @@ abstract sealed class Book {
         }
 
         public NewBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, null, null);
         }
 
@@ -73,8 +73,8 @@ abstract sealed class Book {
         }
 
         public ApprovedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
-                    new ApprovedAt(snapshot.approvedAt()), null, null);
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+                    ApprovedAt.from(snapshot.approvedAt()), null, null);
         }
 
         @Override
@@ -100,8 +100,8 @@ abstract sealed class Book {
         }
 
         public RejectedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
-                    null, new RejectedAt(snapshot.rejectedAt()), null);
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+                    null, RejectedAt.from(snapshot.rejectedAt()), null);
         }
 
         @Override
@@ -132,8 +132,8 @@ abstract sealed class Book {
         }
 
         public ArchivedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), new CreatedAt(snapshot.createdAt()),
-                    null, snapshot.rejectedAt() == null ? null : new RejectedAt(snapshot.rejectedAt()), new ArchivedAt(snapshot.archivedAt()));
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+                    null, RejectedAt.from(snapshot.rejectedAt()), ArchivedAt.from(snapshot.archivedAt()));
         }
 
         @Override

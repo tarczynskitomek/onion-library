@@ -3,6 +3,7 @@ package it.tarczynski.onion.library.book;
 import it.tarczynski.onion.library.generated.tables.records.BooksRecord;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.InsertSetMoreStep;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ class PostgresBookRepository implements BookRepository {
     @Override
     public Book create(Book book) {
         final BookSnapshot snapshot = book.snapshot();
-        dsl.insertInto(BOOKS)
+        try (final InsertSetMoreStep<BooksRecord> insertSteps = dsl.insertInto(BOOKS)
                 .set(BOOKS.ID, snapshot.id())
                 .set(BOOKS.AUTHOR, snapshot.authorId())
                 .set(BOOKS.TITLE, snapshot.title())
@@ -30,7 +31,9 @@ class PostgresBookRepository implements BookRepository {
                 .set(BOOKS.REJECTED_AT, toOffsetDateTimeNullable(snapshot.rejectedAt()))
                 .set(BOOKS.ARCHIVED_AT, toOffsetDateTimeNullable(snapshot.archivedAt()))
                 .set(BOOKS.STATUS, snapshot.status().toString())
-                .execute();
+        ) {
+            insertSteps.execute();
+        }
         return book;
     }
 
