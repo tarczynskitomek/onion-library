@@ -4,6 +4,7 @@ import it.tarczynski.onion.library.author.AuthorId;
 import it.tarczynski.onion.library.book.BookId;
 import it.tarczynski.onion.library.book.Books;
 import it.tarczynski.onion.library.book.web.ApproveBookCommand;
+import it.tarczynski.onion.library.book.web.ArchiveBookCommand;
 import it.tarczynski.onion.library.book.web.CreateBookCommand;
 import it.tarczynski.onion.library.book.web.RejectBookCommand;
 import it.tarczynski.onion.library.shared.ApiV1;
@@ -44,6 +45,14 @@ class BookCommandEndpoint {
     ResponseEntity<BookResponse> rejectBook(@RequestBody RejectBookCommand command) {
         final BookId bookId = BookId.from(command.id());
         final BookResponse book = BookResponse.from(books.reject(bookId));
+        return ResponseEntity.accepted().body(book);
+    }
+
+    @PostMapping("/archive")
+    @ResponseStatus(ACCEPTED)
+    ResponseEntity<BookResponse> archiveBook(@RequestBody ArchiveBookCommand command) {
+        final BookId bookId = BookId.from(command.id());
+        final BookResponse book = BookResponse.from(books.archive(bookId));
         return ResponseEntity.accepted().body(book);
     }
 }

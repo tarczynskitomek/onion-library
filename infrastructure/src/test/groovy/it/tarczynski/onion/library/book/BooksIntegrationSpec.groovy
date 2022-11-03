@@ -1,6 +1,7 @@
 package it.tarczynski.onion.library.book
 
 import it.tarczynski.onion.library.book.web.ApproveBookCommand
+import it.tarczynski.onion.library.book.web.ArchiveBookCommand
 import it.tarczynski.onion.library.book.web.CreateBookCommand
 import it.tarczynski.onion.library.book.web.RejectBookCommand
 import it.tarczynski.onion.library.shared.BaseIntegrationSpec
@@ -113,6 +114,43 @@ class BooksIntegrationSpec extends BaseIntegrationSpec {
                         .isRejected()
                         .hasCreationTime(TimeFixture.NOW)
                         .hasRejectionTime(TimeFixture.NOW.plusSeconds(60))
+            // @formatter:on
+    }
+
+    def "should archive approved book"() {
+        given: 'a book'
+            String id = createNewBook()
+
+        and: 'the book is approved'
+            bookCommands.execute(new ApproveBookCommand(id))
+
+        and: 'some time has passed'
+            timeMachine.advanceBy(1, ChronoUnit.MINUTES)
+
+        and: 'a command to archive the book'
+            ArchiveBookCommand command = new ArchiveBookCommand(id)
+
+        when: 'the command is executed'
+            ResponseEntity<Map> response = bookCommands.execute(command)
+
+        then: 'the response contains the details of rejected book'
+            // @formatter:off
+            ResponseAssertions.assertThat(response)
+                    .isAccepted()
+                    .containsBookThat()
+                    .isArchived()
+                    .hasCreationTime(TimeFixture.NOW)
+                    .hasArchivisationTime(TimeFixture.NOW.plusSeconds(60))
+            // @formatter:on
+
+        and: 'it is possible to read it again'
+            // @formatter:off
+            ResponseAssertions.assertThat(bookQueries.queryById(id))
+                    .isOK()
+                    .containsBookThat()
+                        .isArchived()
+                        .hasCreationTime(TimeFixture.NOW)
+                        .hasArchivisationTime(TimeFixture.NOW.plusSeconds(60))
             // @formatter:on
     }
 

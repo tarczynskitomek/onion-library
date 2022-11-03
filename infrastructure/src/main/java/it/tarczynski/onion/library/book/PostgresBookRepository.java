@@ -3,8 +3,6 @@ package it.tarczynski.onion.library.book;
 import it.tarczynski.onion.library.generated.tables.records.BooksRecord;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.InsertSetMoreStep;
-import org.jooq.UpdateSetMoreStep;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +14,7 @@ import static java.time.ZoneOffset.UTC;
 
 @Component
 @AllArgsConstructor
+@SuppressWarnings("resource")
 class PostgresBookRepository implements BookRepository {
 
     private final DSLContext dsl;
@@ -23,7 +22,7 @@ class PostgresBookRepository implements BookRepository {
     @Override
     public Book create(Book book) {
         final BookSnapshot snapshot = book.snapshot();
-        try (final InsertSetMoreStep<BooksRecord> insertSteps = dsl.insertInto(BOOKS)
+        dsl.insertInto(BOOKS)
                 .set(BOOKS.ID, snapshot.id())
                 .set(BOOKS.AUTHOR, snapshot.author().id())
                 .set(BOOKS.TITLE, snapshot.title())
@@ -32,9 +31,7 @@ class PostgresBookRepository implements BookRepository {
                 .set(BOOKS.REJECTED_AT, toOffsetDateTimeNullable(snapshot.rejectedAt()))
                 .set(BOOKS.ARCHIVED_AT, toOffsetDateTimeNullable(snapshot.archivedAt()))
                 .set(BOOKS.STATUS, snapshot.status().toString())
-        ) {
-            insertSteps.execute();
-        }
+                .execute();
         return book;
     }
 
@@ -60,13 +57,12 @@ class PostgresBookRepository implements BookRepository {
     @Override
     public Book update(Book book) {
         final BookSnapshot snapshot = book.snapshot();
-        try (final UpdateSetMoreStep<BooksRecord> update = dsl.update(BOOKS)
+        dsl.update(BOOKS)
                 .set(BOOKS.STATUS, snapshot.status().toString())
                 .set(BOOKS.APPROVED_AT, toOffsetDateTimeNullable(snapshot.approvedAt()))
                 .set(BOOKS.REJECTED_AT, toOffsetDateTimeNullable(snapshot.rejectedAt()))
-        ) {
-            update.where(BOOKS.ID.eq(snapshot.id())).execute();
-        }
+                .set(BOOKS.ARCHIVED_AT, toOffsetDateTimeNullable(snapshot.archivedAt()))
+                .where(BOOKS.ID.eq(snapshot.id())).execute();
         return book;
     }
 

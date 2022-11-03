@@ -48,7 +48,7 @@ public class Books {
             final Book book = bookRepository.getById(bookId);
             final ArchivedAt archivedAt = new ArchivedAt(timeMachine.now());
             final Book archived = book.archive(archivedAt);
-            return bookRepository.create(archived).snapshot();
+            return bookRepository.update(archived).snapshot();
         });
     }
 }

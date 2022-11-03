@@ -2,6 +2,7 @@ package it.tarczynski.onion.library.book
 
 import groovy.transform.CompileStatic
 import it.tarczynski.onion.library.book.web.ApproveBookCommand
+import it.tarczynski.onion.library.book.web.ArchiveBookCommand
 import it.tarczynski.onion.library.book.web.CreateBookCommand
 import it.tarczynski.onion.library.book.web.RejectBookCommand
 import it.tarczynski.onion.library.shared.BaseTestClient
@@ -38,6 +39,15 @@ class BookCommandClient extends BaseTestClient {
     ResponseEntity<Map> execute(RejectBookCommand command) {
         restTemplate.exchange(
                 RequestEntity.post('/books/commands/reject')
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(command),
+                Map
+        )
+    }
+
+    ResponseEntity<Map> execute(ArchiveBookCommand command) {
+        restTemplate.exchange(
+                RequestEntity.post('/books/commands/archive')
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map

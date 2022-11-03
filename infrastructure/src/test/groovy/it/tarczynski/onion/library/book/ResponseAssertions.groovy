@@ -98,7 +98,7 @@ class ResponseAssertions {
             this
         }
 
-        BodyAssertions hasArchivisationDate(Instant expected) {
+        BodyAssertions hasArchivisationTime(Instant expected) {
             assert subject.archivedAt() == expected
             this
         }
