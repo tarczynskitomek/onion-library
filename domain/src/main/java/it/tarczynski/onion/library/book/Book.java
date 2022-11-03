@@ -6,6 +6,7 @@ import it.tarczynski.onion.library.shared.ArchivedAt;
 import it.tarczynski.onion.library.shared.CreatedAt;
 import it.tarczynski.onion.library.shared.RejectedAt;
 import it.tarczynski.onion.library.shared.Title;
+import it.tarczynski.onion.library.shared.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ import java.util.Optional;
 abstract sealed class Book {
 
     protected final BookId id;
+    protected final Version version;
     protected final AuthorId author;
     protected final Title title;
     protected final CreatedAt createdAt;
@@ -27,7 +29,7 @@ abstract sealed class Book {
     protected final ArchivedAt archivedAt;
 
     static Book create(AuthorId author, Title title, CreatedAt createdAt) {
-        return new NewBook(BookId.next(), author, title, createdAt);
+        return new NewBook(BookId.next(), Version.first(), author, title, createdAt);
     }
 
     static Book from(BookSnapshot snapshot) {
@@ -41,12 +43,12 @@ abstract sealed class Book {
 
     private static final class NewBook extends Book {
 
-        private NewBook(BookId id, AuthorId author, Title title, CreatedAt createdAt) {
-            super(id, author, title, createdAt, null, null, null);
+        private NewBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt) {
+            super(id, version, author, title, createdAt, null, null, null);
         }
 
         public NewBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), Version.from(snapshot.version()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, null, null);
         }
 
@@ -57,23 +59,23 @@ abstract sealed class Book {
 
         @Override
         Book approve(ApprovedAt approvedAt) {
-            return new ApprovedBook(id, author, title, createdAt, approvedAt);
+            return new ApprovedBook(id, version, author, title, createdAt, approvedAt);
         }
 
         @Override
         Book reject(RejectedAt rejectedAt) {
-            return new RejectedBook(id, author, title, createdAt, rejectedAt);
+            return new RejectedBook(id, version, author, title, createdAt, rejectedAt);
         }
     }
 
     private static final class ApprovedBook extends Book {
 
-        private ApprovedBook(BookId id, AuthorId author, Title title, CreatedAt createdAt, ApprovedAt approvedAt) {
-            super(id, author, title, createdAt, approvedAt, null, null);
+        private ApprovedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, ApprovedAt approvedAt) {
+            super(id, version, author, title, createdAt, approvedAt, null, null);
         }
 
         public ApprovedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), Version.from(snapshot.version()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     ApprovedAt.from(snapshot.approvedAt()), null, null);
         }
 
@@ -89,18 +91,18 @@ abstract sealed class Book {
 
         @Override
         Book archive(ArchivedAt archivedAt) {
-            return new ArchivedBook(id, author, title, createdAt, approvedAt, archivedAt);
+            return new ArchivedBook(id, version, author, title, createdAt, approvedAt, archivedAt);
         }
     }
 
     private static final class RejectedBook extends Book {
 
-        private RejectedBook(BookId id, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt) {
-            super(id, author, title, createdAt, null, rejectedAt, null);
+        private RejectedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt) {
+            super(id, version, author, title, createdAt, null, rejectedAt, null);
         }
 
         public RejectedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), Version.from(snapshot.version()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, RejectedAt.from(snapshot.rejectedAt()), null);
         }
 
@@ -116,23 +118,23 @@ abstract sealed class Book {
 
         @Override
         Book archive(ArchivedAt archivedAt) {
-            return new ArchivedBook(id, author, title, createdAt, rejectedAt, archivedAt);
+            return new ArchivedBook(id, version, author, title, createdAt, rejectedAt, archivedAt);
         }
     }
 
     private static final class ArchivedBook extends Book {
 
 
-        private ArchivedBook(BookId id, AuthorId author, Title title, CreatedAt createdAt, ApprovedAt approvedAt, ArchivedAt archivedAt) {
-            super(id, author, title, createdAt, approvedAt, null, archivedAt);
+        private ArchivedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, ApprovedAt approvedAt, ArchivedAt archivedAt) {
+            super(id, version, author, title, createdAt, approvedAt, null, archivedAt);
         }
 
-        private ArchivedBook(BookId id, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt, ArchivedAt archivedAt) {
-            super(id, author, title, createdAt, null, rejectedAt, archivedAt);
+        private ArchivedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt, ArchivedAt archivedAt) {
+            super(id, version, author, title, createdAt, null, rejectedAt, archivedAt);
         }
 
         public ArchivedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), Version.from(snapshot.version()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, RejectedAt.from(snapshot.rejectedAt()), ArchivedAt.from(snapshot.archivedAt()));
         }
 
@@ -171,6 +173,7 @@ abstract sealed class Book {
     BookSnapshot snapshot() {
         return BookSnapshot.builder()
                 .id(id.value().toString())
+                .version(version.value())
                 .author(new BookSnapshot.Author(author.value().toString()))
                 .title(title.value())
                 .createdAt(createdAt.time())

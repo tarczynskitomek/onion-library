@@ -6,6 +6,7 @@ import java.time.Instant;
 
 @Builder
 public record BookSnapshot(String id,
+                           Integer version,
                            Author author,
                            String title,
                            Instant createdAt,
