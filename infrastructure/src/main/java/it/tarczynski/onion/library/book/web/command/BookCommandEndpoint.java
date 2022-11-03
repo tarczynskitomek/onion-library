@@ -2,7 +2,6 @@ package it.tarczynski.onion.library.book.web.command;
 
 import it.tarczynski.onion.library.author.AuthorId;
 import it.tarczynski.onion.library.book.BookId;
-import it.tarczynski.onion.library.book.BookSnapshot;
 import it.tarczynski.onion.library.book.Books;
 import it.tarczynski.onion.library.book.web.ApproveBookCommand;
 import it.tarczynski.onion.library.book.web.CreateBookCommand;
@@ -25,26 +24,26 @@ class BookCommandEndpoint {
 
     @PostMapping("/create")
     @ResponseStatus(ACCEPTED)
-    ResponseEntity<BookSnapshot> createBook(@RequestBody CreateBookCommand command) {
+    ResponseEntity<BookResponse> createBook(@RequestBody CreateBookCommand command) {
         final AuthorId author = AuthorId.from(command.getAuthor().getId());
         final Title title = new Title(command.getTitle());
-        final BookSnapshot book = books.create(author, title);
+        final BookResponse book = BookResponse.from(books.create(author, title));
         return ResponseEntity.accepted().body(book);
     }
 
     @PostMapping("/approve")
     @ResponseStatus(ACCEPTED)
-    ResponseEntity<BookSnapshot> approveBook(@RequestBody ApproveBookCommand command) {
+    ResponseEntity<BookResponse> approveBook(@RequestBody ApproveBookCommand command) {
         final BookId bookId = BookId.from(command.id());
-        final BookSnapshot book = books.approve(bookId);
+        final BookResponse book = BookResponse.from(books.approve(bookId));
         return ResponseEntity.accepted().body(book);
     }
 
     @PostMapping("/reject")
     @ResponseStatus(ACCEPTED)
-    ResponseEntity<BookSnapshot> rejectBook(@RequestBody RejectBookCommand command) {
+    ResponseEntity<BookResponse> rejectBook(@RequestBody RejectBookCommand command) {
         final BookId bookId = BookId.from(command.id());
-        final BookSnapshot book = books.reject(bookId);
+        final BookResponse book = BookResponse.from(books.reject(bookId));
         return ResponseEntity.accepted().body(book);
     }
 }
