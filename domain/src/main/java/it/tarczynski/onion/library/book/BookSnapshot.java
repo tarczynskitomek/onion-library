@@ -6,13 +6,17 @@ import java.time.Instant;
 
 @Builder
 public record BookSnapshot(String id,
-                           String authorId,
+                           Author author,
                            String title,
                            Instant createdAt,
                            Instant approvedAt,
                            Instant rejectedAt,
                            Instant archivedAt,
                            Status status) {
+
+    public record Author(String id) {
+    }
+
     public enum Status {
         AWAITING_APPROVAL, APPROVED, REJECTED, ARCHIVED,
     }

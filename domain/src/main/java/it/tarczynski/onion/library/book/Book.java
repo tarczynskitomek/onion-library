@@ -46,7 +46,7 @@ abstract sealed class Book {
         }
 
         public NewBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, null, null);
         }
 
@@ -73,7 +73,7 @@ abstract sealed class Book {
         }
 
         public ApprovedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     ApprovedAt.from(snapshot.approvedAt()), null, null);
         }
 
@@ -100,7 +100,7 @@ abstract sealed class Book {
         }
 
         public RejectedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, RejectedAt.from(snapshot.rejectedAt()), null);
         }
 
@@ -132,7 +132,7 @@ abstract sealed class Book {
         }
 
         public ArchivedBook(BookSnapshot snapshot) {
-            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.authorId()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
+            super(BookId.from(snapshot.id()), AuthorId.from(snapshot.author().id()), new Title(snapshot.title()), CreatedAt.from(snapshot.createdAt()),
                     null, RejectedAt.from(snapshot.rejectedAt()), ArchivedAt.from(snapshot.archivedAt()));
         }
 
@@ -171,7 +171,7 @@ abstract sealed class Book {
     BookSnapshot snapshot() {
         return BookSnapshot.builder()
                 .id(id.value().toString())
-                .authorId(author.value().toString())
+                .author(new BookSnapshot.Author(author.value().toString()))
                 .title(title.value())
                 .createdAt(createdAt.time())
                 .approvedAt(approvedAt().map(ApprovedAt::time).orElse(null))

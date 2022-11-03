@@ -60,7 +60,7 @@ class Assertions {
     }
 
     Assertions hasAuthor(String expected) {
-        assert subject.authorId() == expected
+        assert subject.author().id() == expected
         this
     }
 

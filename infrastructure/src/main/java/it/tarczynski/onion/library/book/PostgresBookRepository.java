@@ -25,7 +25,7 @@ class PostgresBookRepository implements BookRepository {
         final BookSnapshot snapshot = book.snapshot();
         try (final InsertSetMoreStep<BooksRecord> insertSteps = dsl.insertInto(BOOKS)
                 .set(BOOKS.ID, snapshot.id())
-                .set(BOOKS.AUTHOR, snapshot.authorId())
+                .set(BOOKS.AUTHOR, snapshot.author().id())
                 .set(BOOKS.TITLE, snapshot.title())
                 .set(BOOKS.CREATED_AT, toOffsetDateTimeNullable(snapshot.createdAt()))
                 .set(BOOKS.APPROVED_AT, toOffsetDateTimeNullable(snapshot.approvedAt()))
@@ -47,7 +47,7 @@ class PostgresBookRepository implements BookRepository {
         final BookSnapshot snapshot = BookSnapshot.builder()
                 .id(record.getId())
                 .title(record.getTitle())
-                .authorId(record.getAuthor())
+                .author(new BookSnapshot.Author(record.getAuthor()))
                 .createdAt(record.getCreatedAt().toInstant())
                 .approvedAt(toInstantNullable(record.getApprovedAt()))
                 .rejectedAt(toInstantNullable(record.getRejectedAt()))

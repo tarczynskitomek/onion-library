@@ -37,7 +37,7 @@ class ResponseAssertions {
     private BookSnapshot fromBody() {
         new BookSnapshot(
                 response.body.id as String,
-                response.body.authorId as String,
+                new BookSnapshot.Author(response.body.author.id as String),
                 response.body.title as String,
                 parseNullableInstant(response.body.createdAt as String),
                 parseNullableInstant(response.body.approvedAt as String),
