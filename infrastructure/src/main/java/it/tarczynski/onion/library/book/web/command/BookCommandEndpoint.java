@@ -13,9 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static org.springframework.http.HttpStatus.ACCEPTED;
 
 @ApiV1("/books/commands")
 @AllArgsConstructor
@@ -24,7 +21,6 @@ class BookCommandEndpoint {
     private final Books books;
 
     @PostMapping("/create")
-    @ResponseStatus(ACCEPTED)
     ResponseEntity<BookResponse> createBook(@RequestBody CreateBookCommand command) {
         final AuthorId author = AuthorId.from(command.getAuthor().getId());
         final Title title = new Title(command.getTitle());
@@ -33,7 +29,6 @@ class BookCommandEndpoint {
     }
 
     @PostMapping("/approve")
-    @ResponseStatus(ACCEPTED)
     ResponseEntity<BookResponse> approveBook(@RequestBody ApproveBookCommand command) {
         final BookId bookId = BookId.from(command.id());
         final BookResponse book = BookResponse.from(books.approve(bookId));
@@ -41,7 +36,6 @@ class BookCommandEndpoint {
     }
 
     @PostMapping("/reject")
-    @ResponseStatus(ACCEPTED)
     ResponseEntity<BookResponse> rejectBook(@RequestBody RejectBookCommand command) {
         final BookId bookId = BookId.from(command.id());
         final BookResponse book = BookResponse.from(books.reject(bookId));
@@ -49,7 +43,6 @@ class BookCommandEndpoint {
     }
 
     @PostMapping("/archive")
-    @ResponseStatus(ACCEPTED)
     ResponseEntity<BookResponse> archiveBook(@RequestBody ArchiveBookCommand command) {
         final BookId bookId = BookId.from(command.id());
         final BookResponse book = BookResponse.from(books.archive(bookId));
