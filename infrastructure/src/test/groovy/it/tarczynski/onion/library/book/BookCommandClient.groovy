@@ -19,8 +19,9 @@ class BookCommandClient extends BaseTestClient {
     }
 
     ResponseEntity<Map> execute(CreateBookCommand command) {
+        UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.post('/books/commands/create')
+                RequestEntity.put("/books/commands/create/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map
@@ -28,8 +29,9 @@ class BookCommandClient extends BaseTestClient {
     }
 
     ResponseEntity<Map> execute(ApproveBookCommand command) {
+        UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.post('/books/commands/approve')
+                RequestEntity.put("/books/commands/approve/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map
@@ -37,8 +39,9 @@ class BookCommandClient extends BaseTestClient {
     }
 
     ResponseEntity<Map> execute(RejectBookCommand command) {
+        UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.post('/books/commands/reject')
+                RequestEntity.put("/books/commands/reject/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map
@@ -46,8 +49,9 @@ class BookCommandClient extends BaseTestClient {
     }
 
     ResponseEntity<Map> execute(ArchiveBookCommand command) {
+        UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.post('/books/commands/archive')
+                RequestEntity.put("/books/commands/archive/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map

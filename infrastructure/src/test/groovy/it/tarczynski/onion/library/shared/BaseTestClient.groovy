@@ -9,4 +9,8 @@ class BaseTestClient {
     BaseTestClient(TestRestTemplate restTemplate) {
         this.restTemplate = restTemplate
     }
+
+    protected static UUID generateId() {
+        UUID.randomUUID()
+    }
 }
