@@ -1,15 +1,16 @@
 package it.tarczynski.onion.library.book
 
-import it.tarczynski.onion.library.author.AuthorId
+
 import it.tarczynski.onion.library.shared.ApprovedAt
 import it.tarczynski.onion.library.shared.BaseIntegrationSpec
 import it.tarczynski.onion.library.shared.RejectedAt
-import it.tarczynski.onion.library.shared.Title
 import it.tarczynski.onion.library.shared.exception.OptimisticLockingException
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Subject
 
 import java.time.Instant
+
+import static it.tarczynski.onion.library.TestUtil.randomUUIDString
 
 class PostgresBookRepositoryConcurrencySpec extends BaseIntegrationSpec {
 
@@ -22,7 +23,9 @@ class PostgresBookRepositoryConcurrencySpec extends BaseIntegrationSpec {
 
     def "should fail with optimistic locking exception if the same record is modified twice after being read"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'it is modified two times'
             Book first = bookRepository.getById(BookId.from(book.id())).approve(ApprovedAt.from(Instant.now()))

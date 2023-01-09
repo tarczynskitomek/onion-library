@@ -1,7 +1,7 @@
 package it.tarczynski.onion.library
 
 import it.tarczynski.onion.library.book.BookCommandClient
-import it.tarczynski.onion.library.book.web.CreateBookCommand
+import it.tarczynski.onion.library.book.CreateBookCommand
 import it.tarczynski.onion.library.reader.CreateReaderCommand
 import it.tarczynski.onion.library.reader.ReaderCommandsClient
 import it.tarczynski.onion.library.shared.BaseIntegrationSpec

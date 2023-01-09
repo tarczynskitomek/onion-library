@@ -1,15 +1,15 @@
 package it.tarczynski.onion.library.book
 
-import it.tarczynski.onion.library.author.AuthorId
+
 import it.tarczynski.onion.library.shared.NoOpTransactionsFake
 import it.tarczynski.onion.library.shared.TimeFixture
 import it.tarczynski.onion.library.shared.TimeMachineFake
-import it.tarczynski.onion.library.shared.Title
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.temporal.ChronoUnit
 
+import static it.tarczynski.onion.library.TestUtil.randomUUIDString
 import static it.tarczynski.onion.library.book.Assertions.assertThat
 
 class BooksSpec extends Specification {
@@ -21,8 +21,11 @@ class BooksSpec extends Specification {
     private Books books = bookConfiguration.bookFacade()
 
     def "should create new book in awaiting approval status"() {
+        given: 'a command'
+            CreateBookCommand createBookCommand = new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+
         when: 'new book is created'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(createBookCommand)
 
         then: 'it is awaiting approval'
             assertThat(book)
@@ -32,13 +35,15 @@ class BooksSpec extends Specification {
 
     def "should approve new book"() {
         given: 'new book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'some time has passed'
             timeMachine.advanceBy(61, ChronoUnit.SECONDS)
 
         when: 'the book is approved'
-            BookSnapshot approved = books.approve(BookId.from(book.id()))
+            BookSnapshot approved = books.handle(new ApproveBookCommand(book.id()))
 
         then: 'the book is approved and approval date is set'
             assertThat(approved)
@@ -49,16 +54,18 @@ class BooksSpec extends Specification {
 
     def "should should do nothing when approving already approved book"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'the book is approved'
-            books.approve(BookId.from(book.id()))
+            books.handle(new ApproveBookCommand(book.id()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(12, ChronoUnit.HOURS)
 
         when: 'it is approved for the second time'
-            BookSnapshot approvedTwice = books.approve(BookId.from(book.id()))
+            BookSnapshot approvedTwice = books.handle(new ApproveBookCommand(book.id()))
 
         then: 'nothing happens'
             notThrown(UnsupportedOperationException)
@@ -71,13 +78,15 @@ class BooksSpec extends Specification {
 
     def "should reject new book"() {
         given: 'new book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'some time has passed'
             timeMachine.advanceBy(1, ChronoUnit.MINUTES)
 
         when: 'the book is approved'
-            BookSnapshot rejected = books.reject(BookId.from(book.id()))
+            BookSnapshot rejected = books.handle(new RejectBookCommand(book.id()))
 
         then: 'the book is approved and approval date is set'
             assertThat(rejected)
@@ -88,16 +97,18 @@ class BooksSpec extends Specification {
 
     def "should do nothing when rejecting already rejected book"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'the book is rejected'
-            books.reject(BookId.from(book.id()))
+            books.handle(new RejectBookCommand(book.id()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(12, ChronoUnit.HOURS)
 
         when: 'it is rejected for the second time'
-            BookSnapshot rejectedTwice = books.reject(BookId.from(book.id()))
+            BookSnapshot rejectedTwice = books.handle(new RejectBookCommand(book.id()))
 
         then: 'nothing happens'
             notThrown(UnsupportedOperationException)
@@ -110,13 +121,15 @@ class BooksSpec extends Specification {
 
     def "should not reject approved book"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'which is already approved'
-            BookSnapshot approved = books.approve(BookId.from(book.id()))
+            BookSnapshot approved = books.handle(new ApproveBookCommand(book.id()))
 
         when: 'trying to reject'
-            books.reject(BookId.from(approved.id()))
+            books.handle(new RejectBookCommand(approved.id()))
 
         then: 'an exception is thrown'
             UnsupportedOperationException ex = thrown(UnsupportedOperationException)
@@ -130,13 +143,15 @@ class BooksSpec extends Specification {
 
     def "should not approve rejected book"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'the book is rejected'
-            books.reject(BookId.from(book.id()))
+            books.handle(new RejectBookCommand(book.id()))
 
         when: 'it is approved'
-            books.approve(BookId.from(book.id()))
+            books.handle(new ApproveBookCommand(book.id()))
 
         then: 'an exception is thrown'
             UnsupportedOperationException ex = thrown(UnsupportedOperationException)
@@ -147,16 +162,18 @@ class BooksSpec extends Specification {
 
     def "should archive approved the book"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'the book is approved'
-            books.approve(BookId.from(book.id()))
+            books.handle(new ApproveBookCommand(book.id()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(3, ChronoUnit.SECONDS)
 
         when: 'the book is archived'
-            BookSnapshot archived = books.archive(BookId.from(book.id()))
+            BookSnapshot archived = books.handle(new ArchiveBookCommand(book.id()))
 
         then: 'its status is changed and archivisation date is set'
             assertThat(archived)
@@ -167,16 +184,18 @@ class BooksSpec extends Specification {
 
     def "should archive rejected book"() {
         given: 'a book'
-            BookSnapshot book = books.create(AuthorId.next(), new Title('The Title'))
+            BookSnapshot book = books.handle(
+                    new CreateBookCommand('The Title', new CreateBookCommand.Author(randomUUIDString()))
+            )
 
         and: 'the book is rejected'
-            books.reject(BookId.from(book.id()))
+            books.handle(new RejectBookCommand(book.id()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(12, ChronoUnit.DAYS)
 
         when: 'the book is archived'
-            BookSnapshot archived = books.archive(BookId.from(book.id()))
+            BookSnapshot archived = books.handle(new ArchiveBookCommand(book.id()))
 
         then: 'its status is changed and archivisation date is set'
             assertThat(archived)

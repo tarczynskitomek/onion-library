@@ -1,14 +1,11 @@
 package it.tarczynski.onion.library.book.web.command;
 
-import it.tarczynski.onion.library.author.AuthorId;
-import it.tarczynski.onion.library.book.BookId;
+import it.tarczynski.onion.library.book.ApproveBookCommand;
+import it.tarczynski.onion.library.book.ArchiveBookCommand;
 import it.tarczynski.onion.library.book.Books;
-import it.tarczynski.onion.library.book.web.ApproveBookCommand;
-import it.tarczynski.onion.library.book.web.ArchiveBookCommand;
-import it.tarczynski.onion.library.book.web.CreateBookCommand;
-import it.tarczynski.onion.library.book.web.RejectBookCommand;
+import it.tarczynski.onion.library.book.CreateBookCommand;
+import it.tarczynski.onion.library.book.RejectBookCommand;
 import it.tarczynski.onion.library.shared.ApiV1;
-import it.tarczynski.onion.library.shared.Title;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +27,7 @@ class BookCommandEndpoint {
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final AuthorId author = AuthorId.from(command.getAuthor().getId());
-        final Title title = new Title(command.getTitle());
-        final BookResponse book = BookResponse.from(books.create(author, title));
+        final BookResponse book = BookResponse.from(books.handle(command));
         return ResponseEntity.accepted().body(book);
     }
 
@@ -42,8 +37,7 @@ class BookCommandEndpoint {
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final BookId bookId = BookId.from(command.id());
-        final BookResponse book = BookResponse.from(books.approve(bookId));
+        final BookResponse book = BookResponse.from(books.handle(command));
         return ResponseEntity.accepted().body(book);
     }
 
@@ -53,8 +47,7 @@ class BookCommandEndpoint {
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final BookId bookId = BookId.from(command.id());
-        final BookResponse book = BookResponse.from(books.reject(bookId));
+        final BookResponse book = BookResponse.from(books.handle(command));
         return ResponseEntity.accepted().body(book);
     }
 
@@ -64,8 +57,7 @@ class BookCommandEndpoint {
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final BookId bookId = BookId.from(command.id());
-        final BookResponse book = BookResponse.from(books.archive(bookId));
+        final BookResponse book = BookResponse.from(books.handle(command));
         return ResponseEntity.accepted().body(book);
     }
 }

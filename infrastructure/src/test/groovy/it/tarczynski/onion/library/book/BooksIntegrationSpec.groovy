@@ -1,9 +1,6 @@
 package it.tarczynski.onion.library.book
 
-import it.tarczynski.onion.library.book.web.ApproveBookCommand
-import it.tarczynski.onion.library.book.web.ArchiveBookCommand
-import it.tarczynski.onion.library.book.web.CreateBookCommand
-import it.tarczynski.onion.library.book.web.RejectBookCommand
+
 import it.tarczynski.onion.library.shared.BaseIntegrationSpec
 import it.tarczynski.onion.library.shared.TimeFixture
 import org.springframework.beans.factory.annotation.Autowired

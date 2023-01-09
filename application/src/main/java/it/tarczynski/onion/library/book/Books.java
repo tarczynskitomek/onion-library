@@ -17,25 +17,29 @@ public class Books {
     private final TimeMachine timeMachine;
     private final Transactions transactions;
 
-    public BookSnapshot create(AuthorId author, Title title) {
+    public BookSnapshot handle(CreateBookCommand command) {
         return transactions.execute(() -> {
+            final Title title = command.title();
+            final AuthorId author = command.author();
             final CreatedAt createdAt = new CreatedAt(timeMachine.now());
             final Book book = Book.create(author, title, createdAt);
             return bookRepository.create(book).snapshot();
         });
     }
 
-    public BookSnapshot approve(BookId id) {
+    public BookSnapshot handle(ApproveBookCommand command) {
         return transactions.execute(() -> {
-            final Book book = bookRepository.getById(id);
+            final BookId bookId = command.id();
+            final Book book = bookRepository.getById(bookId);
             final ApprovedAt approvedAt = new ApprovedAt(timeMachine.now());
             final Book approved = book.approve(approvedAt);
             return bookRepository.update(approved).snapshot();
         });
     }
 
-    public BookSnapshot reject(BookId bookId) {
+    public BookSnapshot handle(RejectBookCommand command) {
         return transactions.execute(() -> {
+            final BookId bookId = command.id();
             final Book book = bookRepository.getById(bookId);
             final RejectedAt rejectedAt = new RejectedAt(timeMachine.now());
             final Book rejected = book.reject(rejectedAt);
@@ -43,8 +47,9 @@ public class Books {
         });
     }
 
-    public BookSnapshot archive(BookId bookId) {
+    public BookSnapshot handle(ArchiveBookCommand command) {
         return transactions.execute(() -> {
+            final BookId bookId = command.id();
             final Book book = bookRepository.getById(bookId);
             final ArchivedAt archivedAt = new ArchivedAt(timeMachine.now());
             final Book archived = book.archive(archivedAt);

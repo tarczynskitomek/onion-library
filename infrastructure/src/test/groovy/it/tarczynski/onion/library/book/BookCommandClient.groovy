@@ -1,10 +1,6 @@
 package it.tarczynski.onion.library.book
 
 import groovy.transform.CompileStatic
-import it.tarczynski.onion.library.book.web.ApproveBookCommand
-import it.tarczynski.onion.library.book.web.ArchiveBookCommand
-import it.tarczynski.onion.library.book.web.CreateBookCommand
-import it.tarczynski.onion.library.book.web.RejectBookCommand
 import it.tarczynski.onion.library.shared.BaseTestClient
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.MediaType

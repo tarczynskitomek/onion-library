@@ -1,5 +1,7 @@
-package it.tarczynski.onion.library.book.web;
+package it.tarczynski.onion.library.book;
 
+import it.tarczynski.onion.library.author.AuthorId;
+import it.tarczynski.onion.library.shared.Title;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,13 @@ public class CreateBookCommand {
     @AllArgsConstructor
     public static class Author {
         private String id;
+    }
+
+    public Title title() {
+        return Title.of(title);
+    }
+
+    public AuthorId author() {
+        return AuthorId.from(author.id);
     }
 }
