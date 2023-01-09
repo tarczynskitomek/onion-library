@@ -18,7 +18,7 @@ public class Library {
             final ReaderId readerId = command.readerId();
             bookBorrowingPolicy.verifyCanBorrow(bookId, readerId);
             final BookLoan loan = BookLoan.create(bookId, readerId);
-            return loanRepository.save(loan).snapshot();
+            return loanRepository.create(loan).snapshot();
         });
     }
 }

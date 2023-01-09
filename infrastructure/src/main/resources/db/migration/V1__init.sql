@@ -23,3 +23,10 @@ create table readers
     id varchar not null primary key,
     age integer not null
 );
+
+-- loans
+create table loans (
+    id varchar not null primary key,
+    book_id varchar not null references books(id),
+    reader_id varchar not null references readers(id)
+);

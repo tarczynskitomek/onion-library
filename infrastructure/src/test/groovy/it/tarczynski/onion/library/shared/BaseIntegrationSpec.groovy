@@ -2,6 +2,8 @@ package it.tarczynski.onion.library.shared
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import it.tarczynski.onion.library.generated.tables.Books
+import it.tarczynski.onion.library.generated.tables.Loans
+import it.tarczynski.onion.library.generated.tables.Readers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -28,7 +30,11 @@ class BaseIntegrationSpec extends Specification {
     protected TimeMachineFake timeMachine
 
     def setup() {
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, Books.BOOKS.name)
+        JdbcTestUtils.deleteFromTables(jdbcTemplate,
+                Loans.LOANS.name,
+                Books.BOOKS.name,
+                Readers.READERS.name,
+        )
         timeMachine.reset()
     }
 

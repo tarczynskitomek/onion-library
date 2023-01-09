@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 interface LoanRepository {
-    BookLoan save(BookLoan loan);
+    BookLoan create(BookLoan loan);
 
     class InMemoryLoanRepository implements LoanRepository {
 
         private final Map<String, BookLoan> loans = new HashMap<>();
 
         @Override
-        public BookLoan save(BookLoan loan) {
+        public BookLoan create(BookLoan loan) {
             this.loans.put(loan.snapshot().id(), loan);
             return loan;
         }
