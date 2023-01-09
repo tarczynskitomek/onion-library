@@ -12,7 +12,7 @@ public class Library {
     private final Transactions transactions;
     private final BookBorrowingPolicy bookBorrowingPolicy;
 
-    public BookLoanSnapshot borrow(BorrowBookCommand command) {
+    public BookLoanSnapshot handle(BorrowBookCommand command) {
         return transactions.execute(() -> {
             final BookId bookId = command.bookId();
             final ReaderId readerId = command.readerId();

@@ -9,11 +9,11 @@ public class Readers {
     private final ReaderRepository readerRepository;
     private final Transactions transactions;
 
-    public ReaderSnapshot create(CreateReaderCommand command) {
+    public ReaderSnapshot handle(CreateReaderCommand command) {
         return transactions.execute(() -> {
             final ReaderAge age = command.age();
             final Reader reader = Reader.create(age);
-            return readerRepository.save(reader).snapshot();
+            return readerRepository.create(reader).snapshot();
         });
     }
 }

@@ -25,7 +25,7 @@ class ReaderCommandEndpoint {
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final ReaderSnapshot reader = readers.create(command);
+        final ReaderSnapshot reader = readers.handle(command);
         return ResponseEntity.accepted().body(reader);
     }
 }

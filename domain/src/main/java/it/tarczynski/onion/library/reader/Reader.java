@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 class Reader {
 
@@ -13,6 +13,12 @@ class Reader {
 
     public static Reader create(ReaderAge age) {
         return new Reader(ReaderId.next(), age);
+    }
+
+    public static Reader from(ReaderSnapshot snapshot) {
+        final ReaderId id = ReaderId.from(snapshot.id());
+        final ReaderAge age = ReaderAge.of(snapshot.age());
+        return new Reader(id, age);
     }
 
     ReaderSnapshot snapshot() {

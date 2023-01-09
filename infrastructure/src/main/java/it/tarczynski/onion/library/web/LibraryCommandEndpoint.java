@@ -25,7 +25,7 @@ class LibraryCommandEndpoint {
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final BookLoanSnapshot snapshot = library.borrow(command);
+        final BookLoanSnapshot snapshot = library.handle(command);
         return ResponseEntity.accepted().body(snapshot);
     }
 }

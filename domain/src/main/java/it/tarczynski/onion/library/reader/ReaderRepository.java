@@ -5,7 +5,7 @@ import java.util.Map;
 
 interface ReaderRepository {
 
-    Reader save(Reader reader);
+    Reader create(Reader reader);
 
     Reader getBy(ReaderId id);
 
@@ -14,7 +14,7 @@ interface ReaderRepository {
         private final Map<String, Reader> readers = new HashMap<>();
 
         @Override
-        public Reader save(Reader reader) {
+        public Reader create(Reader reader) {
             readers.put(reader.snapshot().id(), reader);
             return reader;
         }

@@ -16,3 +16,10 @@ create table books
     rejected_at timestamp with time zone,
     archived_at timestamp with time zone
 );
+
+-- readers
+create table readers
+(
+    id varchar not null primary key,
+    age integer not null
+);
