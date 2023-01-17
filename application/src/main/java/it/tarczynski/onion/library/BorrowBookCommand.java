@@ -2,7 +2,6 @@ package it.tarczynski.onion.library;
 
 import it.tarczynski.onion.library.book.BookId;
 import it.tarczynski.onion.library.reader.ReaderId;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
