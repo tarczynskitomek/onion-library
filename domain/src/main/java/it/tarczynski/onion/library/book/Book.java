@@ -195,18 +195,6 @@ abstract sealed class Book {
         throw new UnsupportedOperationException("Unsupported state transition. Cannot archive book in state [%s]".formatted(status()));
     }
 
-    private Optional<ApprovedAt> approvedAt() {
-        return Optional.ofNullable(approvedAt);
-    }
-
-    private Optional<RejectedAt> rejectedAt() {
-        return Optional.ofNullable(rejectedAt);
-    }
-
-    private Optional<ArchivedAt> archivedAt() {
-        return Optional.ofNullable(archivedAt);
-    }
-
     BookSnapshot snapshot() {
         return BookSnapshot.builder()
                 .id(id)
