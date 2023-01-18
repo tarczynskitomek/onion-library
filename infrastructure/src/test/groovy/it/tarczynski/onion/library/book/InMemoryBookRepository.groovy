@@ -2,7 +2,7 @@ package it.tarczynski.onion.library.book
 
 class InMemoryBookRepository implements BookRepository {
 
-    private final Map<String, Book> database = new HashMap<>()
+    private final Map<BookId, Book> database = new HashMap<>()
 
     @Override
     Book create(Book book) {
@@ -12,7 +12,7 @@ class InMemoryBookRepository implements BookRepository {
 
     @Override
     Book getById(BookId id) {
-        database.get(id.value().toString())
+        database.get(id)
     }
 
     @Override

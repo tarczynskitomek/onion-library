@@ -2,7 +2,11 @@ package it.tarczynski.onion.library.shared;
 
 import java.time.Instant;
 
-public record RejectedAt(Instant time) {
+public class RejectedAt extends TimeValue {
+
+    public RejectedAt(Instant time) {
+        super(time);
+    }
 
     public static RejectedAt from(Instant time) {
         return time == null

@@ -43,7 +43,7 @@ class BooksSpec extends Specification {
             timeMachine.advanceBy(61, ChronoUnit.SECONDS)
 
         when: 'the book is approved'
-            BookSnapshot approved = books.handle(new ApproveBookCommand(book.id()))
+            BookSnapshot approved = books.handle(new ApproveBookCommand(book.id().value().toString()))
 
         then: 'the book is approved and approval date is set'
             assertThat(approved)
@@ -59,13 +59,13 @@ class BooksSpec extends Specification {
             )
 
         and: 'the book is approved'
-            books.handle(new ApproveBookCommand(book.id()))
+            books.handle(new ApproveBookCommand(book.id().value().toString()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(12, ChronoUnit.HOURS)
 
         when: 'it is approved for the second time'
-            BookSnapshot approvedTwice = books.handle(new ApproveBookCommand(book.id()))
+            BookSnapshot approvedTwice = books.handle(new ApproveBookCommand(book.id().value().toString()))
 
         then: 'nothing happens'
             notThrown(UnsupportedOperationException)
@@ -86,7 +86,7 @@ class BooksSpec extends Specification {
             timeMachine.advanceBy(1, ChronoUnit.MINUTES)
 
         when: 'the book is approved'
-            BookSnapshot rejected = books.handle(new RejectBookCommand(book.id()))
+            BookSnapshot rejected = books.handle(new RejectBookCommand(book.id().value().toString()))
 
         then: 'the book is approved and approval date is set'
             assertThat(rejected)
@@ -102,13 +102,13 @@ class BooksSpec extends Specification {
             )
 
         and: 'the book is rejected'
-            books.handle(new RejectBookCommand(book.id()))
+            books.handle(new RejectBookCommand(book.id().value().toString()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(12, ChronoUnit.HOURS)
 
         when: 'it is rejected for the second time'
-            BookSnapshot rejectedTwice = books.handle(new RejectBookCommand(book.id()))
+            BookSnapshot rejectedTwice = books.handle(new RejectBookCommand(book.id().value().toString()))
 
         then: 'nothing happens'
             notThrown(UnsupportedOperationException)
@@ -126,10 +126,10 @@ class BooksSpec extends Specification {
             )
 
         and: 'which is already approved'
-            BookSnapshot approved = books.handle(new ApproveBookCommand(book.id()))
+            BookSnapshot approved = books.handle(new ApproveBookCommand(book.id().value().toString()))
 
         when: 'trying to reject'
-            books.handle(new RejectBookCommand(approved.id()))
+            books.handle(new RejectBookCommand(approved.id().value().toString()))
 
         then: 'an exception is thrown'
             UnsupportedOperationException ex = thrown(UnsupportedOperationException)
@@ -148,10 +148,10 @@ class BooksSpec extends Specification {
             )
 
         and: 'the book is rejected'
-            books.handle(new RejectBookCommand(book.id()))
+            books.handle(new RejectBookCommand(book.id().value().toString()))
 
         when: 'it is approved'
-            books.handle(new ApproveBookCommand(book.id()))
+            books.handle(new ApproveBookCommand(book.id().value().toString()))
 
         then: 'an exception is thrown'
             UnsupportedOperationException ex = thrown(UnsupportedOperationException)
@@ -167,13 +167,13 @@ class BooksSpec extends Specification {
             )
 
         and: 'the book is approved'
-            books.handle(new ApproveBookCommand(book.id()))
+            books.handle(new ApproveBookCommand(book.id().value().toString()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(3, ChronoUnit.SECONDS)
 
         when: 'the book is archived'
-            BookSnapshot archived = books.handle(new ArchiveBookCommand(book.id()))
+            BookSnapshot archived = books.handle(new ArchiveBookCommand(book.id().value().toString()))
 
         then: 'its status is changed and archivisation date is set'
             assertThat(archived)
@@ -189,13 +189,13 @@ class BooksSpec extends Specification {
             )
 
         and: 'the book is rejected'
-            books.handle(new RejectBookCommand(book.id()))
+            books.handle(new RejectBookCommand(book.id().value().toString()))
 
         and: 'some time has passed'
             timeMachine.advanceBy(12, ChronoUnit.DAYS)
 
         when: 'the book is archived'
-            BookSnapshot archived = books.handle(new ArchiveBookCommand(book.id()))
+            BookSnapshot archived = books.handle(new ArchiveBookCommand(book.id().value().toString()))
 
         then: 'its status is changed and archivisation date is set'
             assertThat(archived)

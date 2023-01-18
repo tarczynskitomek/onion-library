@@ -21,13 +21,13 @@ public record BookResponse(String id,
 
     public static BookResponse from(BookSnapshot snapshot) {
         return BookResponse.builder()
-                .id(snapshot.id())
-                .author(new Author(snapshot.author().id()))
-                .title(snapshot.title())
-                .createdAt(snapshot.createdAt())
-                .approvedAt(snapshot.approvedAt())
-                .rejectedAt(snapshot.rejectedAt())
-                .archivedAt(snapshot.archivedAt())
+                .id(snapshot.id().value().toString())
+                .author(new Author(snapshot.author().value().toString()))
+                .title(snapshot.title().value())
+                .createdAt(snapshot.createdAt().time())
+                .approvedAt(snapshot.approvedAtTimeNullable())
+                .rejectedAt(snapshot.rejectedAtTimeNullable())
+                .archivedAt(snapshot.archivedAtTimeNullable())
                 .status(snapshot.status().name())
                 .build();
     }

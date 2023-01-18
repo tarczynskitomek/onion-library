@@ -11,4 +11,9 @@ public record BookId(UUID value) {
     static BookId next() {
         return new BookId(UUID.randomUUID());
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

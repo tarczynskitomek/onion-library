@@ -28,14 +28,14 @@ class PostgresBookRepositoryConcurrencySpec extends BaseIntegrationSpec {
             )
 
         and: 'it is modified two times'
-            Book first = bookRepository.getById(BookId.from(book.id())).approve(ApprovedAt.from(Instant.now()))
-            Book second = bookRepository.getById(BookId.from(book.id())).reject(RejectedAt.from(Instant.now()))
+            Book first = bookRepository.getById(book.id()).approve(ApprovedAt.from(Instant.now()))
+            Book second = bookRepository.getById(book.id()).reject(RejectedAt.from(Instant.now()))
 
         when: 'both modifications are saved'
             bookRepository.update(first)
             bookRepository.update(second)
 
-        then: 'the second update fails with optimistic locking excpetion'
+        then: 'the second update fails with optimistic locking exception'
             OptimisticLockingException ex = thrown(OptimisticLockingException)
 
         and:

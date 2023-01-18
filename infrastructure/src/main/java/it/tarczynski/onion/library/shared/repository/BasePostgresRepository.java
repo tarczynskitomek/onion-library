@@ -5,8 +5,6 @@ import org.springframework.lang.Nullable;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 
-import static java.time.ZoneOffset.UTC;
-
 public abstract class BasePostgresRepository {
 
     protected boolean updatedConcurrently(int updatedRecords) {
@@ -20,10 +18,4 @@ public abstract class BasePostgresRepository {
                 : offsetDateTime.toInstant();
     }
 
-    @Nullable
-    protected OffsetDateTime toOffsetDateTimeNullable(@Nullable Instant instant) {
-        return instant == null
-                ? null
-                : instant.atOffset(UTC);
-    }
 }

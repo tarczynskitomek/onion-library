@@ -1,5 +1,8 @@
 package it.tarczynski.onion.library.book
 
+import it.tarczynski.onion.library.shared.ApprovedAt
+import it.tarczynski.onion.library.shared.Title
+
 import java.time.Instant
 
 class Assertions {
@@ -25,7 +28,7 @@ class Assertions {
     }
 
     Assertions hasApprovalDate(Instant expected) {
-        assert subject.approvedAt() == expected
+        assert subject.approvedAtTimeNullable() == expected
         this
     }
 
@@ -35,12 +38,12 @@ class Assertions {
     }
 
     Assertions hasRejectionTime(Instant expected) {
-        assert subject.rejectedAt() == expected
+        assert subject.rejectedAt().time() == expected
         this
     }
 
     Assertions hasCreationTime(Instant expected) {
-        assert subject.createdAt() == expected
+        assert subject.createdAt().time() == expected
         this
     }
 
@@ -50,17 +53,17 @@ class Assertions {
     }
 
     Assertions hasArchivisationDate(Instant expected) {
-        assert subject.archivedAt() == expected
+        assert subject.archivedAt().time() == expected
         this
     }
 
     Assertions hasTitle(String expected) {
-        assert subject.title() == expected
+        assert subject.title() == Title.of(expected)
         this
     }
 
     Assertions hasAuthor(String expected) {
-        assert subject.author().id() == expected
+        assert subject.author().value().toString() == expected
         this
     }
 
