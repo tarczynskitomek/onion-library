@@ -12,8 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.Optional;
-
 @ToString
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -76,19 +74,19 @@ abstract sealed class Book {
 
         @Override
         Book approve(ApprovedAt approvedAt) {
-            return new ApprovedBook(id, version, author, title, createdAt, approvedAt);
+            return new ApprovedBook(this, approvedAt);
         }
 
         @Override
         Book reject(RejectedAt rejectedAt) {
-            return new RejectedBook(id, version, author, title, createdAt, rejectedAt);
+            return new RejectedBook(this, rejectedAt);
         }
     }
 
     private static final class ApprovedBook extends Book {
 
-        private ApprovedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, ApprovedAt approvedAt) {
-            super(id, version, author, title, createdAt, approvedAt);
+        private ApprovedBook(NewBook book, ApprovedAt approvedAt) {
+            super(book.id, book.version, book.author, book.title, book.createdAt, approvedAt);
         }
 
         public ApprovedBook(BookSnapshot snapshot) {
@@ -113,14 +111,14 @@ abstract sealed class Book {
 
         @Override
         Book archive(ArchivedAt archivedAt) {
-            return new ArchivedBook(id, version, author, title, createdAt, approvedAt, archivedAt);
+            return new ArchivedBook(this, archivedAt);
         }
     }
 
     private static final class RejectedBook extends Book {
 
-        private RejectedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt) {
-            super(id, version, author, title, createdAt, null, rejectedAt);
+        private RejectedBook(NewBook book, RejectedAt rejectedAt) {
+            super(book.id, book.version, book.author, book.title, book.createdAt, null, rejectedAt);
         }
 
         public RejectedBook(BookSnapshot snapshot) {
@@ -147,19 +145,19 @@ abstract sealed class Book {
 
         @Override
         Book archive(ArchivedAt archivedAt) {
-            return new ArchivedBook(id, version, author, title, createdAt, rejectedAt, archivedAt);
+            return new ArchivedBook(this, archivedAt);
         }
     }
 
     private static final class ArchivedBook extends Book {
 
 
-        private ArchivedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, ApprovedAt approvedAt, ArchivedAt archivedAt) {
-            super(id, version, author, title, createdAt, approvedAt, null, archivedAt);
+        private ArchivedBook(ApprovedBook book, ArchivedAt archivedAt) {
+            super(book.id, book.version, book.author, book.title, book.createdAt, book.approvedAt, null, archivedAt);
         }
 
-        private ArchivedBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt, RejectedAt rejectedAt, ArchivedAt archivedAt) {
-            super(id, version, author, title, createdAt, null, rejectedAt, archivedAt);
+        private ArchivedBook(RejectedBook book, ArchivedAt archivedAt) {
+            super(book.id, book.version, book.author, book.title, book.createdAt, null, book.rejectedAt, archivedAt);
         }
 
         public ArchivedBook(BookSnapshot snapshot) {
