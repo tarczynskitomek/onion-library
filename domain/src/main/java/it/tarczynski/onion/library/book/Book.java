@@ -13,10 +13,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @ToString
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 abstract sealed class Book {
 
+    @EqualsAndHashCode.Include
     protected final BookId id;
     protected final Version version;
     protected final AuthorId author;
