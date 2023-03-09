@@ -9,11 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.jdbc.JdbcTestUtils
 import spock.lang.Specification
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 
+// Workaround Spock Spring module not detecting Spring tests after bumping Spring Boot version to 3.0
+// see: https://github.com/spockframework/spock/issues/1539
+@ContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class BaseIntegrationSpec extends Specification {
 
