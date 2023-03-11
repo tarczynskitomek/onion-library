@@ -9,9 +9,9 @@ public class Patrons {
     private final PatronRepository patronRepository;
     private final Transactions transactions;
 
-    public PatronSnapshot handle(CreatePatronCommand command) {
+    public PatronSnapshot handle(CreateRegularPatronCommand command) {
         return transactions.execute(() -> {
-            final Patron patron = Patron.create();
+            final Patron patron = Patron.createRegular(command.patronName());
             return patronRepository.create(patron).snapshot();
         });
     }

@@ -24,6 +24,7 @@ subprojects {
     }
 
     dependencies {
+        implementation('com.google.guava:guava:31.1-jre')
         compileOnly('org.projectlombok:lombok:1.18.26')
         annotationProcessor('org.projectlombok:lombok:1.18.26')
 

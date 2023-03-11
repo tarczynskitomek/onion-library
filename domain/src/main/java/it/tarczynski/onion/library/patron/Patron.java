@@ -1,27 +1,50 @@
 package it.tarczynski.onion.library.patron;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import com.google.common.base.Preconditions;
 import lombok.EqualsAndHashCode;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+import java.util.Objects;
+
 @EqualsAndHashCode(of = "id")
-class Patron {
+abstract sealed class Patron {
 
     private final PatronId id;
+    private final PatronName name;
 
-    public static Patron create() {
-        return new Patron(PatronId.next());
+    private Patron(PatronId id, PatronName name) {
+        Preconditions.checkArgument(Objects.nonNull(id), "Patron id cannot be null");
+        Preconditions.checkArgument(Objects.nonNull(name), "Patron name cannot be null");
+        this.id = id;
+        this.name = name;
+    }
+
+    public static RegularPatron createRegular(PatronName name) {
+        return new RegularPatron(PatronId.next(), name);
+    }
+
+    final static class RegularPatron extends Patron {
+
+        private RegularPatron(PatronId id, PatronName name) {
+            super(id, name);
+        }
+
+        @Override
+        protected PatronType type() {
+            return PatronType.REGULAR;
+        }
     }
 
     public static Patron from(PatronSnapshot snapshot) {
-        final PatronId id = PatronId.from(snapshot.id());
-        return new Patron(id);
+        return new RegularPatron(snapshot.id(), snapshot.name());
     }
+
+    protected abstract PatronType type();
 
     PatronSnapshot snapshot() {
         return PatronSnapshot.builder()
-                .id(id.value().toString())
+                .id(id)
+                .name(name)
+                .type(type())
                 .build();
     }
 }

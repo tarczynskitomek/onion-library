@@ -21,7 +21,9 @@ class PostgresPatronRepository extends BasePostgresRepository implements PatronR
     public Patron create(Patron patron) {
         final PatronSnapshot snapshot = patron.snapshot();
         dsl.insertInto(PATRONS)
-                .set(PATRONS.ID, snapshot.id())
+                .set(PATRONS.ID, snapshot.id().value().toString())
+                .set(PATRONS.NAME, snapshot.name().value())
+                .set(PATRONS.TYPE, snapshot.type().name())
                 .execute();
         return patron;
     }
@@ -33,7 +35,9 @@ class PostgresPatronRepository extends BasePostgresRepository implements PatronR
             throw new ResourceNotFound("Requested patron [%s] does not exist".formatted(id.value()));
         }
         final PatronSnapshot snapshot = PatronSnapshot.builder()
-                .id(record.getId())
+                .id(PatronId.from(record.getId()))
+                .name(PatronName.of(record.getName()))
+                .type(PatronType.valueOf(record.getType()))
                 .build();
         return Patron.from(snapshot);
     }

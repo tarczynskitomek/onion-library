@@ -2,13 +2,11 @@ package it.tarczynski.onion.library
 
 import it.tarczynski.onion.library.book.BookCommandClient
 import it.tarczynski.onion.library.book.CreateBookCommand
-import it.tarczynski.onion.library.patron.CreatePatronCommand
+import it.tarczynski.onion.library.patron.CreateRegularPatronCommand
 import it.tarczynski.onion.library.patron.PatronCommandsClient
 import it.tarczynski.onion.library.shared.BaseIntegrationSpec
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 
 class LibraryIntegrationSpec extends BaseIntegrationSpec {
 
@@ -28,7 +26,7 @@ class LibraryIntegrationSpec extends BaseIntegrationSpec {
             )
 
         and: 'an adult patron'
-            ResponseEntity<Map> patronResponse = patronCommands.execute(new CreatePatronCommand())
+            ResponseEntity<Map> patronResponse = patronCommands.execute(new CreateRegularPatronCommand('Joe Doe'))
 
         when: 'the book is borrowed the patron'
             ResponseEntity<Map> borrowCommandResponse = libraryCommands.execute(

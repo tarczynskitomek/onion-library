@@ -12,10 +12,10 @@ class PatronCommandsClient extends BaseTestClient {
         super(restTemplate)
     }
 
-    ResponseEntity<Map> execute(CreatePatronCommand command) {
+    ResponseEntity<Map> execute(CreateRegularPatronCommand command) {
         UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.put("/patrons/commands/create/$commandId")
+                RequestEntity.put("/patrons/commands/create-regular/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map

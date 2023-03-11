@@ -37,5 +37,15 @@ class ResponseAssertions {
         BodyAssertions(Map body) {
             this.body = body
         }
+
+        BodyAssertions hasName(String expected) {
+            assert body.name == expected
+            this
+        }
+
+        BodyAssertions isRegular() {
+            assert body.regular
+            this
+        }
     }
 }

@@ -20,7 +20,9 @@ create table books
 -- patrons
 create table patrons
 (
-    id varchar not null primary key
+    id varchar not null primary key,
+    name varchar(512) not null,
+    type varchar(16) not null
 );
 
 -- loans

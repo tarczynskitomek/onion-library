@@ -11,7 +11,7 @@ interface PatronRepository {
 
     class InMemoryPatronRepository implements PatronRepository {
 
-        private final Map<String, Patron> patrons = new HashMap<>();
+        private final Map<PatronId, Patron> patrons = new HashMap<>();
 
         @Override
         public Patron create(Patron patron) {
@@ -21,7 +21,7 @@ interface PatronRepository {
 
         @Override
         public Patron getBy(PatronId id) {
-            return patrons.get(id.value().toString());
+            return patrons.get(id);
         }
     }
 }
