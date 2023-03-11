@@ -37,10 +37,5 @@ class ResponseAssertions {
         BodyAssertions(Map body) {
             this.body = body
         }
-
-        BodyAssertions hasAge(int expected) {
-            assert body.age == expected
-            this
-        }
     }
 }

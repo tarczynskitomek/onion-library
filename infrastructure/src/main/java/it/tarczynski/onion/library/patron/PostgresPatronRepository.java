@@ -22,7 +22,6 @@ class PostgresPatronRepository extends BasePostgresRepository implements PatronR
         final PatronSnapshot snapshot = patron.snapshot();
         dsl.insertInto(PATRONS)
                 .set(PATRONS.ID, snapshot.id())
-                .set(PATRONS.AGE, snapshot.age())
                 .execute();
         return patron;
     }
@@ -35,7 +34,6 @@ class PostgresPatronRepository extends BasePostgresRepository implements PatronR
         }
         final PatronSnapshot snapshot = PatronSnapshot.builder()
                 .id(record.getId())
-                .age(record.getAge())
                 .build();
         return Patron.from(snapshot);
     }

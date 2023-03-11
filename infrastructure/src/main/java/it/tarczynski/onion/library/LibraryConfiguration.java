@@ -16,6 +16,6 @@ class LibraryConfiguration {
 
     @Bean
     Library library() {
-        return new Library(loanRepository, transactions, new AgeBasedBookBorrowingPolicy(patronQueryRepository));
+        return new Library(loanRepository, transactions, new NoopBookBorrowingPolicy(patronQueryRepository));
     }
 }

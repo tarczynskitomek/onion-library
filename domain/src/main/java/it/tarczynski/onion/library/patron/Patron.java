@@ -9,22 +9,19 @@ import lombok.EqualsAndHashCode;
 class Patron {
 
     private final PatronId id;
-    private final ReaderAge age;
 
-    public static Patron create(ReaderAge age) {
-        return new Patron(PatronId.next(), age);
+    public static Patron create() {
+        return new Patron(PatronId.next());
     }
 
     public static Patron from(PatronSnapshot snapshot) {
         final PatronId id = PatronId.from(snapshot.id());
-        final ReaderAge age = ReaderAge.of(snapshot.age());
-        return new Patron(id, age);
+        return new Patron(id);
     }
 
     PatronSnapshot snapshot() {
         return PatronSnapshot.builder()
                 .id(id.value().toString())
-                .age(age.value())
                 .build();
     }
 }

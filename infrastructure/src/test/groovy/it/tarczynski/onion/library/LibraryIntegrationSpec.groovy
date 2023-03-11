@@ -28,9 +28,7 @@ class LibraryIntegrationSpec extends BaseIntegrationSpec {
             )
 
         and: 'an adult patron'
-            ResponseEntity<Map> patronResponse = patronCommands.execute(
-                    new CreatePatronCommand(18)
-            )
+            ResponseEntity<Map> patronResponse = patronCommands.execute(new CreatePatronCommand())
 
         when: 'the book is borrowed the patron'
             ResponseEntity<Map> borrowCommandResponse = libraryCommands.execute(
@@ -48,28 +46,4 @@ class LibraryIntegrationSpec extends BaseIntegrationSpec {
             // @formatter:on
     }
 
-    def "should reject borrow for under aged patron"() {
-        given: 'a book'
-            ResponseEntity<Map> bookResponse = bookCommands.execute(
-                    new CreateBookCommand("The Title", new CreateBookCommand.Author(UUID.randomUUID().toString()))
-            )
-
-        and: 'a patron below adult age'
-            ResponseEntity<Map> patronResponse = patronCommands.execute(
-                    new CreatePatronCommand(17)
-            )
-
-        when: 'the book is borrowed'
-            ResponseEntity<Map> borrowCommandResponse = libraryCommands.execute(
-                    new BorrowBookCommand(extractId(bookResponse), extractId(patronResponse))
-            )
-
-        then: 'the loan is rejected'
-            // @formatter:off
-            ResponseAssertions.assertThat(borrowCommandResponse)
-                    .hasStatus(UNPROCESSABLE_ENTITY)
-                    .hasErrorThat()
-                        .hasMessage("Patron does not meet minimum age requirements")
-            // @formatter:on
-    }
 }

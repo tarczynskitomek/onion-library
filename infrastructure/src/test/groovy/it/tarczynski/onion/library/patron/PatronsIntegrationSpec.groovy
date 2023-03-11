@@ -12,9 +12,9 @@ class PatronsIntegrationSpec extends BaseIntegrationSpec {
     @Autowired
     private PatronQueryClient patronQueries
 
-    def "should create a patron with the given age"() {
+    def "should create a patron"() {
         when: 'a create command is executed'
-            ResponseEntity<Map> response = patronCommands.execute(new CreatePatronCommand(18))
+            ResponseEntity<Map> response = patronCommands.execute(new CreatePatronCommand())
 
         then: 'the command is accepted'
             ResponseAssertions.assertThat(response)
@@ -25,7 +25,6 @@ class PatronsIntegrationSpec extends BaseIntegrationSpec {
             ResponseAssertions.assertThat(patronQueries.queryById(response.body.id as String))
                     .isOK()
                     .hasPatronThat()
-                        .hasAge(18)
             // @formatter:on
     }
 }

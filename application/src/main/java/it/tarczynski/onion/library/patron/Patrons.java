@@ -11,8 +11,7 @@ public class Patrons {
 
     public PatronSnapshot handle(CreatePatronCommand command) {
         return transactions.execute(() -> {
-            final ReaderAge age = command.age();
-            final Patron patron = Patron.create(age);
+            final Patron patron = Patron.create();
             return patronRepository.create(patron).snapshot();
         });
     }
