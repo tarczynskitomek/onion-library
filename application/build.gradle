@@ -1,3 +1,4 @@
 dependencies {
     implementation(project(':domain'))
+    implementation('org.hibernate.validator:hibernate-validator:8.0.0.Final')
 }

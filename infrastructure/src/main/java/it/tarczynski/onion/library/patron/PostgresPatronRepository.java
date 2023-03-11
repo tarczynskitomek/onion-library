@@ -24,6 +24,7 @@ class PostgresPatronRepository extends BasePostgresRepository implements PatronR
                 .set(PATRONS.ID, snapshot.id().value().toString())
                 .set(PATRONS.NAME, snapshot.name().value())
                 .set(PATRONS.TYPE, snapshot.type().name())
+                .set(PATRONS.AFFILIATION, snapshot.affiliation().map(PatronAffiliation::value).orElse(null))
                 .execute();
         return patron;
     }
@@ -38,6 +39,7 @@ class PostgresPatronRepository extends BasePostgresRepository implements PatronR
                 .id(PatronId.from(record.getId()))
                 .name(PatronName.of(record.getName()))
                 .type(PatronType.valueOf(record.getType()))
+                .affiliation(PatronAffiliation.of(record.getAffiliation()))
                 .build();
         return Patron.from(snapshot);
     }

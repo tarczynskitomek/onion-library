@@ -2,10 +2,36 @@ package it.tarczynski.onion.library.patron;
 
 import lombok.Builder;
 
-@Builder
-public record PatronSnapshot(PatronId id, PatronName name, PatronType type) {
+import java.util.Optional;
 
-    public boolean isRegular() {
+@Builder
+public class PatronSnapshot {
+    private final PatronId id;
+    private final PatronName name;
+    private final PatronType type;
+    private final PatronAffiliation affiliation;
+
+    PatronId id() {
+        return id;
+    }
+
+    PatronName name() {
+        return name;
+    }
+
+    PatronType type() {
+        return type;
+    }
+
+    boolean isRegular() {
         return PatronType.REGULAR.equals(type);
+    }
+
+    boolean isResearcher() {
+        return PatronType.RESEARCHER.equals(type);
+    }
+
+    Optional<PatronAffiliation> affiliation() {
+        return Optional.ofNullable(affiliation);
     }
 }

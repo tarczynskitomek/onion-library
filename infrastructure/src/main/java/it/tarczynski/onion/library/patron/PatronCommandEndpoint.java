@@ -1,9 +1,7 @@
-package it.tarczynski.onion.library.patron.web;
+package it.tarczynski.onion.library.patron;
 
-import it.tarczynski.onion.library.patron.CreateRegularPatronCommand;
-import it.tarczynski.onion.library.patron.PatronSnapshot;
-import it.tarczynski.onion.library.patron.Patrons;
 import it.tarczynski.onion.library.shared.ApiV1;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +19,21 @@ class PatronCommandEndpoint {
 
     @PutMapping("/patrons/commands/create-regular/{id}")
     ResponseEntity<PatronResponse> createRegular(
-            @RequestBody CreateRegularPatronCommand command,
+            @Valid @RequestBody CreateRegularPatronCommand command,
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
         final PatronSnapshot patron = patrons.handle(command);
-        return ResponseEntity.accepted().body(
-                PatronResponse.from(patron)
-        );
+        return ResponseEntity.accepted().body(PatronResponse.from(patron));
+    }
+
+    @PutMapping("/patrons/commands/create-researcher/{id}")
+    ResponseEntity<PatronResponse> createResearcher(
+            @Valid @RequestBody CreateResearcherPatronCommand command,
+            @PathVariable("id") String commandId
+    ) {
+        LOG.info("[{}] Consumed command [{}]", commandId, command);
+        final PatronSnapshot patron = patrons.handle(command);
+        return ResponseEntity.accepted().body(PatronResponse.from(patron));
     }
 }

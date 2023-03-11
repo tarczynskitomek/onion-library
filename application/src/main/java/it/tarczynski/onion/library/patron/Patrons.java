@@ -11,7 +11,14 @@ public class Patrons {
 
     public PatronSnapshot handle(CreateRegularPatronCommand command) {
         return transactions.execute(() -> {
-            final Patron patron = Patron.createRegular(command.patronName());
+            final Patron patron = Patron.createRegular(command.name());
+            return patronRepository.create(patron).snapshot();
+        });
+    }
+
+    public PatronSnapshot handle(CreateResearcherPatronCommand command) {
+        return transactions.execute(() -> {
+            final Patron patron = Patron.createResearcher(command.name(), command.affiliation());
             return patronRepository.create(patron).snapshot();
         });
     }

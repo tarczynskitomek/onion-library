@@ -16,16 +16,24 @@ class ResponseAssertions {
     }
 
     ResponseAssertions isAccepted() {
-        assert response.statusCode == HttpStatus.ACCEPTED
-        this
+        hasStatus(HttpStatus.ACCEPTED)
     }
 
     ResponseAssertions isOK() {
-        assert response.statusCode == HttpStatus.OK
+        hasStatus(HttpStatus.OK)
+    }
+
+    ResponseAssertions hasStatus(HttpStatus expected) {
+        assert response.statusCode == expected
         this
     }
 
     BodyAssertions hasPatronThat() {
+        assert response.body != null
+        new BodyAssertions(response.body)
+    }
+
+    BodyAssertions hasErrorThat() {
         assert response.body != null
         new BodyAssertions(response.body)
     }
@@ -43,8 +51,25 @@ class ResponseAssertions {
             this
         }
 
+        BodyAssertions hasAffiliation(String expected) {
+            assert body.affiliation == expected
+            this
+        }
+
         BodyAssertions isRegular() {
             assert body.regular
+            assert !body.researcher
+            this
+        }
+
+        BodyAssertions isResearcher() {
+            assert body.researcher
+            assert !body.regular
+            this
+        }
+
+        BodyAssertions hasMessage(String expected) {
+            assert body.message == expected
             this
         }
     }

@@ -1,7 +1,5 @@
-package it.tarczynski.onion.library.patron.web;
+package it.tarczynski.onion.library.patron;
 
-import it.tarczynski.onion.library.patron.PatronId;
-import it.tarczynski.onion.library.patron.PatronQueryRepository;
 import it.tarczynski.onion.library.shared.ApiV1;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

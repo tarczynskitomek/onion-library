@@ -21,4 +21,14 @@ class PatronCommandsClient extends BaseTestClient {
                 Map
         )
     }
+
+    ResponseEntity<Map> execute(CreateResearcherPatronCommand command) {
+        UUID commandId = generateId()
+        restTemplate.exchange(
+                RequestEntity.put("/patrons/commands/create-researcher/$commandId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(command),
+                Map
+        )
+    }
 }
