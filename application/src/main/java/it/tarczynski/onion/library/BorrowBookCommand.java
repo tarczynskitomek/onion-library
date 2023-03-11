@@ -1,7 +1,7 @@
 package it.tarczynski.onion.library;
 
 import it.tarczynski.onion.library.book.BookId;
-import it.tarczynski.onion.library.reader.ReaderId;
+import it.tarczynski.onion.library.patron.PatronId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +14,13 @@ import lombok.ToString;
 public class BorrowBookCommand {
 
     private String bookId;
-    private String readerId;
+    private String patronId;
 
     BookId bookId() {
         return BookId.from(bookId);
     }
 
-    ReaderId readerId() {
-        return ReaderId.from(readerId);
+    PatronId patronId() {
+        return PatronId.from(patronId);
     }
 }

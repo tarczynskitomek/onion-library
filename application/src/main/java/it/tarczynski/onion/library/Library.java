@@ -1,7 +1,7 @@
 package it.tarczynski.onion.library;
 
 import it.tarczynski.onion.library.book.BookId;
-import it.tarczynski.onion.library.reader.ReaderId;
+import it.tarczynski.onion.library.patron.PatronId;
 import it.tarczynski.onion.library.shared.Transactions;
 import lombok.AllArgsConstructor;
 
@@ -15,9 +15,9 @@ public class Library {
     public BookLoanSnapshot handle(BorrowBookCommand command) {
         return transactions.execute(() -> {
             final BookId bookId = command.bookId();
-            final ReaderId readerId = command.readerId();
-            bookBorrowingPolicy.verifyCanBorrow(bookId, readerId);
-            final BookLoan loan = BookLoan.create(bookId, readerId);
+            final PatronId patronId = command.patronId();
+            bookBorrowingPolicy.verifyCanBorrow(bookId, patronId);
+            final BookLoan loan = BookLoan.create(bookId, patronId);
             return loanRepository.create(loan).snapshot();
         });
     }

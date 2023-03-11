@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library.reader;
+package it.tarczynski.onion.library.patron;
 
 public record ReaderAge(int value) {
 

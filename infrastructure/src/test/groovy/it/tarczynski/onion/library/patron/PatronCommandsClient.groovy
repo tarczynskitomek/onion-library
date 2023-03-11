@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library.reader
+package it.tarczynski.onion.library.patron
 
 import it.tarczynski.onion.library.shared.BaseTestClient
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -6,16 +6,16 @@ import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 
-class ReaderCommandsClient extends BaseTestClient {
+class PatronCommandsClient extends BaseTestClient {
 
-    ReaderCommandsClient(TestRestTemplate restTemplate) {
+    PatronCommandsClient(TestRestTemplate restTemplate) {
         super(restTemplate)
     }
 
-    ResponseEntity<Map> exectue(CreateReaderCommand command) {
+    ResponseEntity<Map> execute(CreatePatronCommand command) {
         UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.put("/readers/commands/create/$commandId")
+                RequestEntity.put("/patrons/commands/create/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map

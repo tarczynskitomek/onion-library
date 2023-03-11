@@ -17,8 +17,8 @@ create table books
     archived_at timestamp with time zone
 );
 
--- readers
-create table readers
+-- patrons
+create table patrons
 (
     id varchar not null primary key,
     age integer not null
@@ -28,5 +28,5 @@ create table readers
 create table loans (
     id varchar not null primary key,
     book_id varchar not null references books(id),
-    reader_id varchar not null references readers(id)
+    patron_id varchar not null references patrons(id)
 );

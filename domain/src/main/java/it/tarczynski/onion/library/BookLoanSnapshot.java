@@ -6,6 +6,6 @@ import lombok.Builder;
 public record BookLoanSnapshot(
         String id,
         String bookId,
-        String readerId
+        String patronId
 ) {
 }

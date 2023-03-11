@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library.reader
+package it.tarczynski.onion.library.patron
 
 import it.tarczynski.onion.library.shared.BaseTestClient
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -6,15 +6,15 @@ import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 
-class ReaderQueryClient extends BaseTestClient {
+class PatronQueryClient extends BaseTestClient {
 
-    ReaderQueryClient(TestRestTemplate restTemplate) {
+    PatronQueryClient(TestRestTemplate restTemplate) {
         super(restTemplate)
     }
 
     ResponseEntity<Map> queryById(String id) {
         restTemplate.exchange(
-                RequestEntity.get("/readers/$id")
+                RequestEntity.get("/patrons/$id")
                         .accept(MediaType.APPLICATION_JSON)
                         .build(),
                 Map

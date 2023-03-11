@@ -23,7 +23,7 @@ public class PostgresLoanRepository extends BasePostgresRepository implements Lo
         dsl.insertInto(LOANS)
                 .set(LOANS.ID, snapshot.id())
                 .set(LOANS.BOOK_ID, snapshot.bookId())
-                .set(LOANS.READER_ID, snapshot.readerId())
+                .set(LOANS.PATRON_ID, snapshot.patronId())
                 .execute();
         return loan;
     }

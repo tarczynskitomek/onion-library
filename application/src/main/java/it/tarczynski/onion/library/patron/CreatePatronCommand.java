@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library.reader;
+package it.tarczynski.onion.library.patron;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateReaderCommand {
+public class CreatePatronCommand {
 
     private Integer age;
 

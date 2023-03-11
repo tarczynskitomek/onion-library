@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library.reader
+package it.tarczynski.onion.library.patron
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,7 +25,7 @@ class ResponseAssertions {
         this
     }
 
-    BodyAssertions hasReaderThat() {
+    BodyAssertions hasPatronThat() {
         assert response.body != null
         new BodyAssertions(response.body)
     }

@@ -48,8 +48,8 @@ class ResponseAssertions {
             this
         }
 
-        BodyAssertions hasReaderId(String expected) {
-            assert body.readerId == expected
+        BodyAssertions hasPatronId(String expected) {
+            assert body.patronId == expected
             this
         }
 
