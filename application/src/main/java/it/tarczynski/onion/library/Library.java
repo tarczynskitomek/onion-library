@@ -16,7 +16,7 @@ class Library {
         return transactions.execute(() -> {
             final BookId bookId = command.bookId();
             final PatronId patronId = command.patronId();
-            bookHoldingPolicy.verifyCanBorrow(bookId, patronId);
+            bookHoldingPolicy.verifyCanHold(bookId, patronId);
             final BookHold hold = BookHold.create(bookId, patronId);
             return holdRepository.create(hold).snapshot();
         });

@@ -2,10 +2,7 @@ package it.tarczynski.onion.library.book;
 
 import it.tarczynski.onion.library.author.AuthorId;
 import it.tarczynski.onion.library.generated.tables.records.BooksRecord;
-import it.tarczynski.onion.library.shared.ApprovedAt;
-import it.tarczynski.onion.library.shared.ArchivedAt;
 import it.tarczynski.onion.library.shared.CreatedAt;
-import it.tarczynski.onion.library.shared.RejectedAt;
 import it.tarczynski.onion.library.shared.Title;
 import it.tarczynski.onion.library.shared.Version;
 import it.tarczynski.onion.library.shared.exception.OptimisticLockingException;
@@ -34,10 +31,7 @@ class PostgresBookRepository extends BasePostgresRepository implements BookRepos
                 .set(BOOKS.AUTHOR, snapshot.author().value().toString())
                 .set(BOOKS.TITLE, snapshot.title().value())
                 .set(BOOKS.CREATED_AT, snapshot.createdAtOffsetTime())
-                .set(BOOKS.APPROVED_AT, snapshot.approvedAtOffsetTime())
-                .set(BOOKS.REJECTED_AT, snapshot.rejectedAtOffsetTime())
-                .set(BOOKS.ARCHIVED_AT, snapshot.archivedAtOffsetTime())
-                .set(BOOKS.STATUS, snapshot.status().toString())
+                .set(BOOKS.STATUS, snapshot.type().toString())
                 .execute();
         return book;
     }
@@ -48,18 +42,15 @@ class PostgresBookRepository extends BasePostgresRepository implements BookRepos
         if (record == null) {
             throw new ResourceNotFound("Requested book [%s] does not exist".formatted(id.value()));
         }
-        final BookSnapshot snapshot = BookSnapshot.builder()
+        return BookSnapshot.builder()
                 .id(BookId.from(record.getId()))
                 .version(Version.from(record.getVersion()))
                 .title(Title.of(record.getTitle()))
                 .author(AuthorId.from(record.getAuthor()))
                 .createdAt(CreatedAt.from(record.getCreatedAt().toInstant()))
-                .approvedAt(ApprovedAt.from(toInstantNullable(record.getApprovedAt())))
-                .rejectedAt(RejectedAt.from(toInstantNullable(record.getRejectedAt())))
-                .archivedAt(ArchivedAt.from(toInstantNullable(record.getArchivedAt())))
-                .status(BookSnapshot.Status.valueOf(record.getStatus()))
-                .build();
-        return Book.from(snapshot);
+                .type(BookType.valueOf(record.getStatus()))
+                .build()
+                .toDomain();
     }
 
     @Override
@@ -75,10 +66,7 @@ class PostgresBookRepository extends BasePostgresRepository implements BookRepos
     private int executeUpdate(BookSnapshot snapshot) {
         return dsl.update(BOOKS)
                 .set(BOOKS.VERSION, snapshot.version().value() + 1)
-                .set(BOOKS.STATUS, snapshot.status().toString())
-                .set(BOOKS.APPROVED_AT, snapshot.approvedAtOffsetTime())
-                .set(BOOKS.REJECTED_AT, snapshot.rejectedAtOffsetTime())
-                .set(BOOKS.ARCHIVED_AT, snapshot.archivedAtOffsetTime())
+                .set(BOOKS.STATUS, snapshot.type().toString())
                 .where(
                         BOOKS.ID.eq(snapshot.id().value().toString())
                                 .and(BOOKS.VERSION.eq(snapshot.version().value()))

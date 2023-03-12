@@ -1,6 +1,6 @@
 package it.tarczynski.onion.library.book
 
-import it.tarczynski.onion.library.shared.ApprovedAt
+
 import it.tarczynski.onion.library.shared.Title
 
 import java.time.Instant
@@ -17,43 +17,18 @@ class Assertions {
         new Assertions(book)
     }
 
-    Assertions isAwaitingApproval() {
-        assert subject.status() == BookSnapshot.Status.AWAITING_APPROVAL
+    Assertions isCirculating() {
+        assert subject.type() == BookType.CIRCULATING
         this
     }
 
-    Assertions isApproved() {
-        assert subject.status() == BookSnapshot.Status.APPROVED
-        this
-    }
-
-    Assertions hasApprovalDate(Instant expected) {
-        assert subject.approvedAtTimeNullable() == expected
-        this
-    }
-
-    Assertions isRejected() {
-        assert subject.status() == BookSnapshot.Status.REJECTED
-        this
-    }
-
-    Assertions hasRejectionTime(Instant expected) {
-        assert subject.rejectedAt().time() == expected
+    Assertions isRestricted() {
+        assert subject.type() == BookType.RESTRICTED
         this
     }
 
     Assertions hasCreationTime(Instant expected) {
         assert subject.createdAt().time() == expected
-        this
-    }
-
-    Assertions isArchived() {
-        assert subject.status() == BookSnapshot.Status.ARCHIVED
-        this
-    }
-
-    Assertions hasArchivisationDate(Instant expected) {
-        assert subject.archivedAt().time() == expected
         this
     }
 

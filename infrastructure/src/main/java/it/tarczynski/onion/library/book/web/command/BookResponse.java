@@ -11,9 +11,6 @@ public record BookResponse(String id,
                            Author author,
                            String title,
                            Instant createdAt,
-                           Instant approvedAt,
-                           Instant rejectedAt,
-                           Instant archivedAt,
                            String status) {
 
     public record Author(String id) {
@@ -25,10 +22,7 @@ public record BookResponse(String id,
                 .author(new Author(snapshot.author().value().toString()))
                 .title(snapshot.title().value())
                 .createdAt(snapshot.createdAt().time())
-                .approvedAt(snapshot.approvedAtTimeNullable())
-                .rejectedAt(snapshot.rejectedAtTimeNullable())
-                .archivedAt(snapshot.archivedAtTimeNullable())
-                .status(snapshot.status().name())
+                .status(snapshot.type().name())
                 .build();
     }
 }

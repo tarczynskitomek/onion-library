@@ -1,9 +1,9 @@
 package it.tarczynski.onion.library
 
-import org.springframework.http.HttpStatus
+import it.tarczynski.onion.library.abilities.WithHttpAssertions
 import org.springframework.http.ResponseEntity
 
-class ResponseAssertions {
+class ResponseAssertions implements WithHttpAssertions<ResponseAssertions> {
 
     private final ResponseEntity<Map> response
 
@@ -15,13 +15,8 @@ class ResponseAssertions {
         new ResponseAssertions(response)
     }
 
-    ResponseAssertions hasStatus(HttpStatus expected) {
-        assert response.statusCode == expected
-        this
-    }
-
-    ResponseAssertions isAccepted() {
-        hasStatus(HttpStatus.ACCEPTED)
+    @Override
+    ResponseAssertions self() {
         this
     }
 
@@ -62,5 +57,10 @@ class ResponseAssertions {
             assert body.error.message == expected
             this
         }
+    }
+
+    @Override
+    ResponseEntity<Map> response() {
+        response
     }
 }

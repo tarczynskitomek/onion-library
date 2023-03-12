@@ -1,9 +1,9 @@
 package it.tarczynski.onion.library.patron
 
-import org.springframework.http.HttpStatus
+import it.tarczynski.onion.library.abilities.WithHttpAssertions
 import org.springframework.http.ResponseEntity
 
-class ResponseAssertions {
+class ResponseAssertions implements WithHttpAssertions<ResponseAssertions> {
 
     private final ResponseEntity<Map> response
 
@@ -13,19 +13,6 @@ class ResponseAssertions {
 
     static ResponseAssertions assertThat(ResponseEntity<Map> response) {
         new ResponseAssertions(response)
-    }
-
-    ResponseAssertions isAccepted() {
-        hasStatus(HttpStatus.ACCEPTED)
-    }
-
-    ResponseAssertions isOK() {
-        hasStatus(HttpStatus.OK)
-    }
-
-    ResponseAssertions hasStatus(HttpStatus expected) {
-        assert response.statusCode == expected
-        this
     }
 
     BodyAssertions hasPatronThat() {
@@ -72,5 +59,15 @@ class ResponseAssertions {
             assert body.message == expected
             this
         }
+    }
+
+    @Override
+    ResponseAssertions self() {
+        this
+    }
+
+    @Override
+    ResponseEntity<Map> response() {
+        response
     }
 }

@@ -1,13 +1,13 @@
 package it.tarczynski.onion.library.book
 
+import it.tarczynski.onion.library.abilities.WithHttpAssertions
 import it.tarczynski.onion.library.book.web.command.BookResponse
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.lang.Nullable
 
 import java.time.Instant
 
-class ResponseAssertions {
+class ResponseAssertions implements WithHttpAssertions<ResponseAssertions> {
 
     private final ResponseEntity<Map> response
 
@@ -19,19 +19,9 @@ class ResponseAssertions {
         new ResponseAssertions(response)
     }
 
-    ResponseAssertions isAccepted() {
-        assert response.statusCode == HttpStatus.ACCEPTED
-        this
-    }
-
     BodyAssertions containsBookThat() {
         final BookResponse snapshot = fromBody()
         BodyAssertions.assertThat(snapshot)
-    }
-
-    ResponseAssertions isOK() {
-        assert response.statusCode == HttpStatus.OK
-        this
     }
 
     private BookResponse fromBody() {
@@ -40,9 +30,6 @@ class ResponseAssertions {
                 new BookResponse.Author(response.body.author.id as String),
                 response.body.title as String,
                 parseNullableInstant(response.body.createdAt as String),
-                parseNullableInstant(response.body.approvedAt as String),
-                parseNullableInstant(response.body.rejectedAt as String),
-                parseNullableInstant(response.body.archivedAt as String),
                 response.body.status as String,
         )
     }
@@ -50,11 +37,11 @@ class ResponseAssertions {
     private static Instant parseNullableInstant(@Nullable String text) {
         text != null ? Instant.parse(text) : null
     }
-    
+
     static class BodyAssertions {
 
         private final BookResponse subject
-        
+
         private BodyAssertions(BookResponse subject) {
             this.subject = subject
         }
@@ -63,43 +50,13 @@ class ResponseAssertions {
             new BodyAssertions(book)
         }
 
-        BodyAssertions isAwaitingApproval() {
-            assert subject.status() == 'AWAITING_APPROVAL'
-            this
-        }
-
-        BodyAssertions isApproved() {
-            assert subject.status() == 'APPROVED'
-            this
-        }
-
-        BodyAssertions hasApprovalDate(Instant expected) {
-            assert subject.approvedAt() == expected
-            this
-        }
-
-        BodyAssertions isRejected() {
-            assert subject.status() == 'REJECTED'
-            this
-        }
-
-        BodyAssertions hasRejectionTime(Instant expected) {
-            assert subject.rejectedAt() == expected
+        BodyAssertions isCirculating() {
+            assert subject.status() == 'CIRCULATING'
             this
         }
 
         BodyAssertions hasCreationTime(Instant expected) {
             assert subject.createdAt() == expected
-            this
-        }
-
-        BodyAssertions isArchived() {
-            assert subject.status() == 'ARCHIVED'
-            this
-        }
-
-        BodyAssertions hasArchivisationTime(Instant expected) {
-            assert subject.archivedAt() == expected
             this
         }
 
@@ -112,5 +69,15 @@ class ResponseAssertions {
             assert subject.author().id() == expected
             this
         }
+    }
+
+    @Override
+    ResponseAssertions self() {
+        this
+    }
+
+    @Override
+    ResponseEntity<Map> response() {
+        response
     }
 }

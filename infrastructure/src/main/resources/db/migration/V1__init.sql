@@ -11,10 +11,7 @@ create table books
     version integer not null,
     author varchar not null, -- should references authors (id)
     status varchar not null,
-    created_at timestamp with time zone not null,
-    approved_at timestamp with time zone,
-    rejected_at timestamp with time zone,
-    archived_at timestamp with time zone
+    created_at timestamp with time zone not null
 );
 
 -- patrons

@@ -11,7 +11,7 @@ class NoopBookHoldingPolicy implements BookHoldingPolicy {
     private final PatronQueryRepository patronQueryRepository;
 
     @Override
-    public void verifyCanBorrow(BookId bookId, PatronId patronId) {
+    public void verifyCanHold(BookId bookId, PatronId patronId) {
         // no-op for the moment
     }
 }

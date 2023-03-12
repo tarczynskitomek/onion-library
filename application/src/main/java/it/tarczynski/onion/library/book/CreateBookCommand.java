@@ -12,6 +12,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateBookCommand {
+
+    private BookType type;
     private String title;
     private Author author;
 
@@ -28,5 +30,9 @@ public class CreateBookCommand {
 
     public AuthorId author() {
         return AuthorId.from(author.id);
+    }
+
+    public BookType type() {
+        return type;
     }
 }
