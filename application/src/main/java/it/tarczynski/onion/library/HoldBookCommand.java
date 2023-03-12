@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BorrowBookCommand {
+public class HoldBookCommand {
 
     private String bookId;
     private String patronId;

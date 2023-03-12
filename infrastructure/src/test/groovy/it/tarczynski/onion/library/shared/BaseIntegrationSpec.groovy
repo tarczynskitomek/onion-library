@@ -2,7 +2,7 @@ package it.tarczynski.onion.library.shared
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import it.tarczynski.onion.library.generated.tables.Books
-import it.tarczynski.onion.library.generated.tables.Loans
+import it.tarczynski.onion.library.generated.tables.Holds
 import it.tarczynski.onion.library.generated.tables.Patrons
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -35,7 +35,7 @@ class BaseIntegrationSpec extends Specification {
 
     def setup() {
         JdbcTestUtils.deleteFromTables(jdbcTemplate,
-                Loans.LOANS.name,
+                Holds.HOLDS.name,
                 Books.BOOKS.name,
                 Patrons.PATRONS.name,
         )

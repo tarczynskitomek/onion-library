@@ -6,19 +6,19 @@ import it.tarczynski.onion.library.shared.Transactions;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class Library {
+class Library {
 
-    private final LoanRepository loanRepository;
+    private final HoldRepository holdRepository;
     private final Transactions transactions;
-    private final BookBorrowingPolicy bookBorrowingPolicy;
+    private final BookHoldingPolicy bookHoldingPolicy;
 
-    public BookLoanSnapshot handle(BorrowBookCommand command) {
+    public BookHoldSnapshot handle(HoldBookCommand command) {
         return transactions.execute(() -> {
             final BookId bookId = command.bookId();
             final PatronId patronId = command.patronId();
-            bookBorrowingPolicy.verifyCanBorrow(bookId, patronId);
-            final BookLoan loan = BookLoan.create(bookId, patronId);
-            return loanRepository.create(loan).snapshot();
+            bookHoldingPolicy.verifyCanBorrow(bookId, patronId);
+            final BookHold hold = BookHold.create(bookId, patronId);
+            return holdRepository.create(hold).snapshot();
         });
     }
 }

@@ -4,10 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
-class LoanRepositoryConfiguration {
+class HoldsRepositoryConfiguration {
 
     @Bean
-    LoanRepository loanRepository() {
-        return new LoanRepository.InMemoryLoanRepository();
+    HoldRepository holdRepository() {
+        return new HoldRepository.InMemoryHoldRepository();
     }
 }

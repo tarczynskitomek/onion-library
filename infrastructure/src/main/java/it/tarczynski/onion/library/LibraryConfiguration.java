@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 class LibraryConfiguration {
 
-    private final LoanRepository loanRepository;
+    private final HoldRepository holdRepository;
     private final Transactions transactions;
     private final PatronQueryRepository patronQueryRepository;
 
     @Bean
     Library library() {
-        return new Library(loanRepository, transactions, new NoopBookBorrowingPolicy(patronQueryRepository));
+        return new Library(holdRepository, transactions, new NoopBookHoldingPolicy(patronQueryRepository));
     }
 }

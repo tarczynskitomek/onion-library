@@ -12,10 +12,10 @@ class LibraryCommandsClient extends BaseTestClient {
         super(restTemplate)
     }
 
-    ResponseEntity<Map> execute(BorrowBookCommand command) {
+    ResponseEntity<Map> execute(HoldBookCommand command) {
         UUID commandId = generateId()
         restTemplate.exchange(
-                RequestEntity.put("/library/loans/commands/create/$commandId")
+                RequestEntity.put("/library/holds/commands/create/$commandId")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(command),
                 Map

@@ -6,7 +6,7 @@ import it.tarczynski.onion.library.patron.PatronQueryRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-class NoopBookBorrowingPolicy implements BookBorrowingPolicy {
+class NoopBookHoldingPolicy implements BookHoldingPolicy {
 
     private final PatronQueryRepository patronQueryRepository;
 

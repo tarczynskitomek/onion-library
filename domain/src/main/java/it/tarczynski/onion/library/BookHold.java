@@ -8,18 +8,18 @@ import lombok.EqualsAndHashCode;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
-class BookLoan {
+class BookHold {
 
-    private final LoanId id;
+    private final HoldId id;
     private final BookId bookId;
     private final PatronId patronId;
 
-    static BookLoan create(BookId bookId, PatronId patronId) {
-        return new BookLoan(LoanId.next(), bookId, patronId);
+    static BookHold create(BookId bookId, PatronId patronId) {
+        return new BookHold(HoldId.next(), bookId, patronId);
     }
 
-    public BookLoanSnapshot snapshot() {
-        return BookLoanSnapshot.builder()
+    public BookHoldSnapshot snapshot() {
+        return BookHoldSnapshot.builder()
                 .id(id.value().toString())
                 .bookId(bookId.value().toString())
                 .patronId(patronId.value().toString())

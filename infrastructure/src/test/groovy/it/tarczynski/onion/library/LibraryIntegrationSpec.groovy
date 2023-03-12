@@ -19,25 +19,25 @@ class LibraryIntegrationSpec extends BaseIntegrationSpec {
     @Autowired
     private LibraryCommandsClient libraryCommands
 
-    def "should borrow a book and create a loan"() {
+    def "should put a book on hold for a regular patron"() {
         given: 'a book'
             ResponseEntity<Map> bookResponse = bookCommands.execute(
                     new CreateBookCommand("The Title", new CreateBookCommand.Author(UUID.randomUUID().toString()))
             )
 
-        and: 'an adult patron'
+        and: 'an a patron'
             ResponseEntity<Map> patronResponse = patronCommands.execute(new CreateRegularPatronCommand('Joe Doe'))
 
-        when: 'the book is borrowed the patron'
-            ResponseEntity<Map> borrowCommandResponse = libraryCommands.execute(
-                    new BorrowBookCommand(extractId(bookResponse), extractId(patronResponse))
+        when: 'the book is put on hold for the patron'
+            ResponseEntity<Map> holdCommandResponse = libraryCommands.execute(
+                    new HoldBookCommand(extractId(bookResponse), extractId(patronResponse))
             )
 
-        then: 'a loan entry is created for the book and the patron'
+        then: 'a hold entry is created for the book and the patron'
             // @formatter:off
-            ResponseAssertions.assertThat(borrowCommandResponse)
+            ResponseAssertions.assertThat(holdCommandResponse)
                     .isAccepted()
-                    .hasLoanThat()
+                    .hasHoldThat()
                         .hasId()
                         .hasBookId(extractId(bookResponse))
                         .hasPatronId(extractId(patronResponse))

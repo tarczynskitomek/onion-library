@@ -6,25 +6,25 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import static it.tarczynski.onion.library.generated.tables.Loans.LOANS;
+import static it.tarczynski.onion.library.generated.tables.Holds.HOLDS;
 
 @Primary
 @Repository
 @AllArgsConstructor
 // jOOQ operations implement AutoCloseable interface, but the resources are closed eagerly - no need to do that by the client code
 @SuppressWarnings("resource")
-public class PostgresLoanRepository extends BasePostgresRepository implements LoanRepository {
+public class PostgresHoldRepository extends BasePostgresRepository implements HoldRepository {
 
     private final DSLContext dsl;
 
     @Override
-    public BookLoan create(BookLoan loan) {
-        final BookLoanSnapshot snapshot = loan.snapshot();
-        dsl.insertInto(LOANS)
-                .set(LOANS.ID, snapshot.id())
-                .set(LOANS.BOOK_ID, snapshot.bookId())
-                .set(LOANS.PATRON_ID, snapshot.patronId())
+    public BookHold create(BookHold hold) {
+        final BookHoldSnapshot snapshot = hold.snapshot();
+        dsl.insertInto(HOLDS)
+                .set(HOLDS.ID, snapshot.id())
+                .set(HOLDS.BOOK_ID, snapshot.bookId())
+                .set(HOLDS.PATRON_ID, snapshot.patronId())
                 .execute();
-        return loan;
+        return hold;
     }
 }

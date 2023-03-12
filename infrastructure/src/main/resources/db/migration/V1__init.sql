@@ -26,8 +26,8 @@ create table patrons
     affiliation varchar
 );
 
--- loans
-create table loans (
+-- holds
+create table holds (
     id varchar not null primary key,
     book_id varchar not null references books(id),
     patron_id varchar not null references patrons(id)

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-class CreateRegularPatronCommand {
+public class CreateRegularPatronCommand {
 
     @NotBlank(message = "Patron name cannot be null or blank")
     private String name;

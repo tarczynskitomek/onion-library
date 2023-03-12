@@ -1,8 +1,5 @@
-package it.tarczynski.onion.library.web;
+package it.tarczynski.onion.library;
 
-import it.tarczynski.onion.library.BookLoanSnapshot;
-import it.tarczynski.onion.library.BorrowBookCommand;
-import it.tarczynski.onion.library.Library;
 import it.tarczynski.onion.library.shared.ApiV1;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -19,13 +16,13 @@ class LibraryCommandEndpoint {
     private static final Logger LOG = LoggerFactory.getLogger(LibraryCommandEndpoint.class);
     private final Library library;
 
-    @PutMapping("/library/loans/commands/create/{id}")
-    ResponseEntity<BookLoanSnapshot> borrow(
-            @RequestBody BorrowBookCommand command,
+    @PutMapping("/library/holds/commands/create/{id}")
+    ResponseEntity<BookHoldSnapshot> hold(
+            @RequestBody HoldBookCommand command,
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
-        final BookLoanSnapshot snapshot = library.handle(command);
+        final BookHoldSnapshot snapshot = library.handle(command);
         return ResponseEntity.accepted().body(snapshot);
     }
 }

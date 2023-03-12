@@ -25,7 +25,7 @@ class ResponseAssertions {
         this
     }
 
-    BodyAssertions hasLoanThat() {
+    BodyAssertions hasHoldThat() {
         assert response.body != null
         new BodyAssertions(response.body)
     }

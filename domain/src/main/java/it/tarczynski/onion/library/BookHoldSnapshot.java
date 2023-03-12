@@ -3,7 +3,7 @@ package it.tarczynski.onion.library;
 import lombok.Builder;
 
 @Builder
-public record BookLoanSnapshot(
+public record BookHoldSnapshot(
         String id,
         String bookId,
         String patronId
