@@ -27,7 +27,7 @@ subprojects {
         compileOnly('org.projectlombok:lombok:1.18.26')
         annotationProcessor('org.projectlombok:lombok:1.18.26')
 
-        testImplementation('org.apache.groovy:groovy-all:4.0.9')
+        testImplementation('org.apache.groovy:groovy-all:4.0.10')
         testImplementation('org.spockframework:spock-core:2.3-groovy-4.0')
     }
 
