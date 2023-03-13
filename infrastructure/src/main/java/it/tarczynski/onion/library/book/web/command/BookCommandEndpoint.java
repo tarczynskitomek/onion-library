@@ -3,6 +3,7 @@ package it.tarczynski.onion.library.book.web.command;
 import it.tarczynski.onion.library.book.Books;
 import it.tarczynski.onion.library.book.CreateBookCommand;
 import it.tarczynski.onion.library.shared.ApiV1;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ class BookCommandEndpoint {
 
     @PutMapping("/create/{id}")
     ResponseEntity<BookResponse> createBook(
-            @RequestBody CreateBookCommand command,
+            @RequestBody @Valid CreateBookCommand command,
             @PathVariable("id") String commandId
     ) {
         LOG.info("[{}] Consumed command [{}]", commandId, command);
