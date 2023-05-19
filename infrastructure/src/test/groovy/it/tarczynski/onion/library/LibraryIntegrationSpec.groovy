@@ -1,6 +1,7 @@
 package it.tarczynski.onion.library
 
 import it.tarczynski.onion.library.book.BookCommandClient
+import it.tarczynski.onion.library.borrowing.HoldBookCommand
 import it.tarczynski.onion.library.patron.CreateRegularPatronCommand
 import it.tarczynski.onion.library.patron.PatronCommandsClient
 import it.tarczynski.onion.library.shared.BaseIntegrationSpec

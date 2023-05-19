@@ -1,5 +1,6 @@
 package it.tarczynski.onion.library
 
+import it.tarczynski.onion.library.borrowing.HoldBookCommand
 import it.tarczynski.onion.library.shared.BaseTestClient
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.MediaType

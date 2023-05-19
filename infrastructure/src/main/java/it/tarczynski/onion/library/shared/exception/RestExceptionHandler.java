@@ -1,5 +1,6 @@
-package it.tarczynski.onion.library;
+package it.tarczynski.onion.library.shared.exception;
 
+import it.tarczynski.onion.library.borrowing.CannotBorrowException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

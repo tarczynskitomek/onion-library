@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library;
+package it.tarczynski.onion.library.borrowing;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

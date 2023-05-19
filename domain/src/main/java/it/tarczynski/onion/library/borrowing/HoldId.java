@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library;
+package it.tarczynski.onion.library.borrowing;
 
 import java.util.UUID;
 

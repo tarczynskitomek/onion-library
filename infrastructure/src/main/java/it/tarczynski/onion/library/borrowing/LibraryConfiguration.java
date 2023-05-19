@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library;
+package it.tarczynski.onion.library.borrowing;
 
 import it.tarczynski.onion.library.patron.PatronQueryRepository;
 import it.tarczynski.onion.library.shared.Transactions;

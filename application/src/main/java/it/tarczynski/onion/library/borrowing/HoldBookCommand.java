@@ -1,4 +1,4 @@
-package it.tarczynski.onion.library;
+package it.tarczynski.onion.library.borrowing;
 
 import it.tarczynski.onion.library.book.BookId;
 import it.tarczynski.onion.library.patron.PatronId;
