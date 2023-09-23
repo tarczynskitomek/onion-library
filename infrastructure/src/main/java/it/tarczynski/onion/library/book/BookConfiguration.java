@@ -1,5 +1,6 @@
 package it.tarczynski.onion.library.book;
 
+import it.tarczynski.onion.library.shared.EventDispatcher;
 import it.tarczynski.onion.library.shared.TimeMachine;
 import it.tarczynski.onion.library.shared.Transactions;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ class BookConfiguration {
     private final BookRepository bookRepository;
     private final TimeMachine timeMachine;
     private final Transactions transactions;
+    private final EventDispatcher eventDispatcher;
 
     @Bean
     Books bookFacade() {

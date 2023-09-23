@@ -1,5 +1,6 @@
 package it.tarczynski.onion.library.book
 
+import it.tarczynski.onion.library.shared.EventDispatcherFake
 import it.tarczynski.onion.library.shared.NoOpTransactionsFake
 import it.tarczynski.onion.library.shared.TimeFixture
 import it.tarczynski.onion.library.shared.TimeMachineFake
@@ -14,7 +15,10 @@ import static it.tarczynski.onion.library.book.CreateBookCommandBuilder.createBo
 class BooksSpec extends Specification {
 
     private TimeMachineFake timeMachine = new TimeMachineFake()
-    private BookConfiguration bookConfiguration = new BookConfiguration(new InMemoryBookRepository(), timeMachine, new NoOpTransactionsFake())
+    private EventDispatcherFake eventDispatcher = new EventDispatcherFake()
+    private BookConfiguration bookConfiguration = new BookConfiguration(
+            new InMemoryBookRepository(), timeMachine, new NoOpTransactionsFake(), eventDispatcher
+    )
 
     @Subject
     private Books books = bookConfiguration.bookFacade()
@@ -35,6 +39,11 @@ class BooksSpec extends Specification {
                     .hasAuthor(createBookCommand.getAuthor().id)
                     .hasTitle('The Lord of The Rings')
                     .isCirculating()
+
+        and: 'an event is dispatched'
+            EventAssertions.assertThat(eventDispatcher)
+                .containsEventForEntity(book.id().value())
+                .ofType(BookCreatedEvent)
     }
 
     def "should create new restricted book"() {
