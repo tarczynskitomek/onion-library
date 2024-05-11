@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import it.tarczynski.onion.library.generated.tables.Books
 import it.tarczynski.onion.library.generated.tables.Loans
 import it.tarczynski.onion.library.generated.tables.Readers
+import it.tarczynski.onion.library.test.patron.Api
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -20,6 +21,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ContextConfiguration
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class BaseIntegrationSpec extends Specification {
+
+    @Autowired
+    protected Api api
 
     @Autowired
     protected TestRestTemplate restTemplate
