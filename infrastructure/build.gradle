@@ -18,6 +18,7 @@ dependencies {
 
     jdbc('org.postgresql:postgresql')
     runtimeOnly('org.postgresql:postgresql')
+    runtimeOnly('org.flywaydb:flyway-database-postgresql')
 
     implementation('org.testcontainers:postgresql')
 
