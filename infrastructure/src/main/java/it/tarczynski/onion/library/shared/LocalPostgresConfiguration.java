@@ -10,7 +10,7 @@ class LocalPostgresConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(LocalPostgresConfiguration.class);
 
-    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:11.1")
+    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.3")
             .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres");
